@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="cloud.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Study Buddy – CloudReady</title>
+    <script src="js/config.js" defer></script>
+    <script src="js/logic.js" defer></script>
+    <script src="js/storage.js" defer></script>
+    <script src="js/data.js" defer></script>
+    <script src="js/ui.js" defer></script>
+    <script src="js/study-buddy.js" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="index.html">
+            <img src="cloud.svg" alt="" width="32" height="32">
+            CloudReady
+        </a>
+        <nav aria-label="Main">
+            <a href="index.html">Practise</a>
+            <a href="dashboard.html">My progress</a>
+            <a href="study-buddy.html" aria-current="page">Study Buddy</a>
+            <a href="about.html">About</a>
+        </nav>
+    </header>
+
+    <main class="site-main buddy-layout">
+        <h1 class="page-title">Study Buddy</h1>
+        <p class="lede">Find a concept, read a plain-language explanation, then test yourself.</p>
+        <p id="status" class="status" role="status">Loading concepts…</p>
+
+        <div class="buddy-columns">
+            <!-- Concept finder -->
+            <section class="card concept-finder" aria-labelledby="finder-heading">
+                <h2 id="finder-heading">Concepts</h2>
+                <div id="missed-box" class="missed" hidden>
+                    <p class="fine-print">You've missed these recently:</p>
+                    <div id="missed-chips" class="chips"></div>
+                </div>
+                <label for="concept-search" class="field-label">Search concepts</label>
+                <input type="search" id="concept-search" placeholder="e.g. storage, RBAC, cost" autocomplete="off">
+                <p id="concept-count" class="fine-print"></p>
+                <ul id="concept-list" class="concept-list"></ul>
+            </section>
+
+            <!-- Explanation -->
+            <section class="card" aria-labelledby="concept-title" aria-live="polite">
+                <p id="concept-topic" class="question-topic"></p>
+                <h2 id="concept-title">Choose a concept</h2>
+                <div id="concept-body">
+                    <p class="empty-hint">Pick a concept from the list to see a plain-language explanation, an example and a question to test yourself.</p>
+                </div>
+
+                <form id="ask-form" class="ask-form" novalidate hidden>
+                    <label for="ask-input" class="field-label">Ask your own question</label>
+                    <textarea id="ask-input" rows="3" maxlength="300" placeholder="e.g. How is this different from Azure Policy? (1–300 characters)"></textarea>
+                    <p id="error-message" class="error-message" role="alert" aria-live="polite"></p>
+                    <button type="submit" id="ask-btn" class="btn btn-primary">Ask the tutor</button>
+                    <p id="ask-status" class="fine-print" role="status"></p>
+                    <div id="ai-answer" class="ai-answer" hidden></div>
+                </form>
+
+                <p id="sources" class="fine-print"></p>
+            </section>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p>CloudReady is an unofficial study tool, not affiliated with or endorsed by Microsoft. Questions are original practice items, not exam questions.</p>
+    </footer>
+</body>
+</html>

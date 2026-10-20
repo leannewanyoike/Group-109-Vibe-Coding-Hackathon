@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CloudReady: unofficial AZ-900 practice quizzes with explanations and topic mastery.">
+    <title>CloudReady – Practise AZ-900</title>
+    <link rel="icon" href="cloud.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/logic.js" defer></script>
+    <script src="js/storage.js" defer></script>
+    <script src="js/data.js" defer></script>
+    <script src="js/ui.js" defer></script>
+    <script src="js/quiz.js" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="index.html">
+            <img src="cloud.svg" alt="" width="32" height="32">
+            CloudReady
+        </a>
+        <nav aria-label="Main">
+            <a href="index.html" aria-current="page">Practise</a>
+            <a href="dashboard.html">My progress</a>
+            <a href="study-buddy.html">Study Buddy</a>
+            <a href="about.html">About</a>
+        </nav>
+    </header>
+
+    <main class="site-main">
+        <!-- Section 1: choose a quiz -->
+        <section id="start-section" aria-labelledby="start-heading">
+            <h1 id="start-heading" class="hero-title">Learn from every answer.</h1>
+            <p class="lede">Practise AZ-900 questions, see exactly why an answer is right, and find out which topics need more work.</p>
+            <p id="status" class="status" role="status">Loading questions…</p>
+            <div id="quiz-choices" class="quiz-choices"></div>
+        </section>
+
+        <!-- Section 2: the quiz -->
+        <section id="quiz-section" class="card" aria-labelledby="question-text" hidden>
+            <div class="quiz-meta">
+                <span id="quiz-title"></span>
+                <span id="quiz-progress"></span>
+            </div>
+            <div class="progress-track" aria-hidden="true"><div id="progress-fill"></div></div>
+
+            <p id="question-topic" class="question-topic"></p>
+            <form id="answer-form" novalidate>
+                <fieldset>
+                    <legend id="question-text" class="question-text"></legend>
+                    <div id="options" class="options"></div>
+                </fieldset>
+                <p id="error-message" class="error-message" role="alert" aria-live="polite"></p>
+                <button type="submit" id="check-btn" class="btn btn-primary btn-wide">Check answer</button>
+            </form>
+
+            <div id="feedback" class="feedback" aria-live="polite" hidden></div>
+            <button type="button" id="next-btn" class="btn btn-primary btn-wide" hidden>Next question</button>
+        </section>
+
+        <!-- Section 3: results -->
+        <section id="results-section" class="card" aria-labelledby="results-heading" hidden>
+            <h2 id="results-heading">Your practice results</h2>
+            <p id="score" class="score"></p>
+            <p id="score-text"></p>
+            <h3>This quiz by topic</h3>
+            <div id="topic-results"></div>
+            <h3>What to do next</h3>
+            <div id="next-step"></div>
+            <div class="actions">
+                <button type="button" id="retry-btn" class="btn btn-secondary">Retake this quiz</button>
+                <a href="dashboard.html" class="btn btn-secondary">View my progress</a>
+                <button type="button" id="home-btn" class="btn btn-secondary">Choose another quiz</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>CloudReady is an unofficial study tool, not affiliated with or endorsed by Microsoft. Questions are original practice items, not exam questions.</p>
+    </footer>
+</body>
+</html>

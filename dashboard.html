@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="cloud.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <title>My progress – CloudReady</title>
+    <script src="js/logic.js" defer></script>
+    <script src="js/storage.js" defer></script>
+    <script src="js/data.js" defer></script>
+    <script src="js/ui.js" defer></script>
+    <script src="js/dashboard.js" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="index.html">
+            <img src="cloud.svg" alt="" width="32" height="32">
+            CloudReady
+        </a>
+        <nav aria-label="Main">
+            <a href="index.html">Practise</a>
+            <a href="dashboard.html" aria-current="page">My progress</a>
+            <a href="study-buddy.html">Study Buddy</a>
+            <a href="about.html">About</a>
+        </nav>
+    </header>
+
+    <main class="site-main">
+        <h1 class="page-title">My progress</h1>
+        <p id="status" class="status" role="status">Loading your progress…</p>
+
+        <!-- Shown when there is no saved practice -->
+        <section id="empty-section" class="card empty" hidden>
+            <h2>No practice saved yet</h2>
+            <p>Finish a quiz and your scores will appear here. They stay saved in this browser.</p>
+            <a href="index.html?mixed=1" class="btn btn-primary">Start a mixed quiz</a>
+        </section>
+
+        <div id="dashboard" hidden>
+            <section class="card" aria-labelledby="summary-heading">
+                <h2 id="summary-heading" class="visually-hidden">Summary</h2>
+                <dl class="stats">
+                    <div><dt>Latest score</dt><dd id="latest-score"></dd></div>
+                    <div><dt>Questions answered</dt><dd id="total-answered"></dd></div>
+                    <div><dt>Quizzes completed</dt><dd id="quiz-count"></dd></div>
+                </dl>
+                <div id="readiness" class="readiness"></div>
+            </section>
+
+            <section class="card" aria-labelledby="mastery-heading">
+                <h2 id="mastery-heading">Topic mastery</h2>
+                <p class="fine-print">Across all your saved quizzes. The yellow line marks the 80% target.</p>
+                <div id="mastery-list"></div>
+            </section>
+
+            <section class="card recommend" aria-labelledby="recommend-heading">
+                <h2 id="recommend-heading">Recommended next step</h2>
+                <p id="recommend-text"></p>
+                <a id="recommend-link" class="btn btn-primary" href="index.html"></a>
+            </section>
+
+            <section class="card" aria-labelledby="history-heading">
+                <div class="section-header">
+                    <h2 id="history-heading">Recent quizzes</h2>
+                    <button type="button" id="clear-all-btn" class="btn btn-danger">Clear all</button>
+                </div>
+                <p id="history-count" class="fine-print"></p>
+                <ul id="history-list" class="history"></ul>
+            </section>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p>CloudReady is an unofficial study tool, not affiliated with or endorsed by Microsoft. Questions are original practice items, not exam questions.</p>
+    </footer>
+</body>
+</html>

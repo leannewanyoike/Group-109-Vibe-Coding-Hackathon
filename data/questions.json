@@ -1,0 +1,294 @@
+{
+  "topics": [
+    "Cloud concepts",
+    "Azure architecture and services",
+    "Management and governance"
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Cloud concepts",
+      "concept": "elasticity",
+      "question": "A Kenyan online shop sees a sudden jump in visitors during a Black Friday sale. Which cloud benefit lets its resources grow and shrink automatically with demand?",
+      "options": [
+        "High availability",
+        "Elasticity",
+        "Governance",
+        "Fault tolerance"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Elasticity is the ability to add or remove resources automatically as demand changes, so you only use (and pay for) what you need at that moment.",
+      "example": "The shop runs extra web servers during the sale weekend, then scales back down on Monday morning."
+    },
+    {
+      "id": 2,
+      "topic": "Cloud concepts",
+      "concept": "shared-responsibility",
+      "question": "A company runs its accounting app on an Azure virtual machine (IaaS). Who is responsible for installing operating system updates on that VM?",
+      "options": [
+        "Microsoft",
+        "The customer",
+        "The internet service provider",
+        "Nobody — Azure VMs never need updates"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Under the shared responsibility model, Microsoft manages the physical datacenter, network and hosts. With IaaS, the customer manages the operating system, applications and data.",
+      "example": "Microsoft keeps the building, power and hardware running, but the company's IT team must patch Windows or Linux on its own VMs."
+    },
+    {
+      "id": 3,
+      "topic": "Cloud concepts",
+      "concept": "capex-opex",
+      "question": "A startup in Nairobi pays a monthly bill for the cloud resources it used instead of buying servers upfront. What type of spending is this?",
+      "options": [
+        "Capital expenditure (CapEx)",
+        "Operational expenditure (OpEx)",
+        "Fixed asset depreciation",
+        "Reserved expenditure"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Paying for services as you use them is operational expenditure (OpEx). Buying physical equipment upfront is capital expenditure (CapEx).",
+      "example": "Like paying for electricity tokens as you use power, rather than buying your own generator."
+    },
+    {
+      "id": 4,
+      "topic": "Cloud concepts",
+      "concept": "service-models",
+      "question": "A school wants staff email and online documents without managing any servers, operating systems or application updates. Which cloud service model fits best?",
+      "options": [
+        "Infrastructure as a Service (IaaS)",
+        "Platform as a Service (PaaS)",
+        "Software as a Service (SaaS)",
+        "On-premises hosting"
+      ],
+      "correctAnswer": 2,
+      "explanation": "With SaaS, the provider delivers a complete, ready-to-use application. The customer mostly manages its own data, users and settings.",
+      "example": "Microsoft 365 is a SaaS example: the school signs in and uses email and documents straight away."
+    },
+    {
+      "id": 5,
+      "topic": "Cloud concepts",
+      "concept": "service-models",
+      "question": "A development team wants to deploy its web application code without managing the underlying servers or operating system. Which service model is designed for this?",
+      "options": [
+        "Infrastructure as a Service (IaaS)",
+        "Platform as a Service (PaaS)",
+        "Software as a Service (SaaS)",
+        "Private cloud"
+      ],
+      "correctAnswer": 1,
+      "explanation": "PaaS provides a managed platform for building and running applications. The provider handles the operating system and runtime, while the team focuses on its code and data.",
+      "example": "A team deploys its M-Pesa payment-reminder web app to Azure App Service without ever logging in to a server."
+    },
+    {
+      "id": 6,
+      "topic": "Cloud concepts",
+      "concept": "cloud-models",
+      "question": "A bank keeps sensitive customer records in its own datacenter but runs its public website in Azure, with the two connected. Which cloud model is this?",
+      "options": [
+        "Public cloud",
+        "Private cloud",
+        "Hybrid cloud",
+        "Community cloud"
+      ],
+      "correctAnswer": 2,
+      "explanation": "A hybrid cloud combines on-premises (or private cloud) infrastructure with public cloud services, so workloads can run in whichever location suits them.",
+      "example": "Core banking stays in the bank's own building, while the marketing website scales in Azure."
+    },
+    {
+      "id": 7,
+      "topic": "Azure architecture and services",
+      "concept": "resource-groups",
+      "question": "Which Azure component logically groups related resources so they can be managed, monitored and deleted together?",
+      "options": [
+        "Azure region",
+        "Resource group",
+        "Availability zone",
+        "Virtual network"
+      ],
+      "correctAnswer": 1,
+      "explanation": "A resource group is a logical container for related Azure resources. Each resource belongs to exactly one resource group.",
+      "example": "A hackathon team puts its web app, database and storage account in one resource group, then deletes the group after the event."
+    },
+    {
+      "id": 8,
+      "topic": "Azure architecture and services",
+      "concept": "availability-zones",
+      "question": "What are physically separate datacenter locations within a single Azure region, each with independent power, cooling and networking?",
+      "options": [
+        "Resource groups",
+        "Availability zones",
+        "Management groups",
+        "Subscriptions"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Availability zones are physically separate locations within an Azure region. Spreading resources across zones protects an application if one datacenter fails.",
+      "example": "If one zone loses power, copies of the app running in the other zones keep serving customers."
+    },
+    {
+      "id": 9,
+      "topic": "Azure architecture and services",
+      "concept": "storage",
+      "question": "A media company needs to store millions of photos and video files. Which Azure storage service is designed for this kind of unstructured data?",
+      "options": [
+        "Azure Blob Storage",
+        "Azure Queue Storage",
+        "Azure Table Storage",
+        "Azure Policy"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Azure Blob Storage is object storage for large amounts of unstructured data such as images, video, audio, backups and documents.",
+      "example": "A Kenyan news site stores every photo from its reporters in Blob Storage and serves them to readers."
+    },
+    {
+      "id": 10,
+      "topic": "Azure architecture and services",
+      "concept": "serverless",
+      "question": "A developer wants a small piece of code to run only when a new order arrives, without managing any servers. Which Azure service fits best?",
+      "options": [
+        "Azure Virtual Machines",
+        "Azure Functions",
+        "Azure Virtual Network",
+        "Azure Advisor"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Azure Functions is a serverless compute service: code runs in response to events, and with the consumption plan you pay mainly for the time the code runs.",
+      "example": "Each time a customer places an order, a function sends them an SMS confirmation."
+    },
+    {
+      "id": 11,
+      "topic": "Azure architecture and services",
+      "concept": "hierarchy",
+      "question": "Which list correctly orders Azure's organisational structure from the broadest level to the narrowest?",
+      "options": [
+        "Resource groups → Subscriptions → Management groups → Resources",
+        "Management groups → Subscriptions → Resource groups → Resources",
+        "Subscriptions → Management groups → Resources → Resource groups",
+        "Resources → Resource groups → Subscriptions → Management groups"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Management groups contain subscriptions, subscriptions contain resource groups, and resource groups contain resources. Settings applied higher up are inherited below.",
+      "example": "A university can have one management group, a subscription per faculty, and a resource group per project."
+    },
+    {
+      "id": 12,
+      "topic": "Azure architecture and services",
+      "concept": "entra-id",
+      "question": "Which Microsoft service provides cloud-based identity and access management, such as user sign-in and multifactor authentication?",
+      "options": [
+        "Microsoft Entra ID",
+        "Azure Blob Storage",
+        "Azure Monitor",
+        "Azure DNS"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Microsoft Entra ID (formerly Azure Active Directory) is Microsoft's cloud identity service. It handles authentication, single sign-on and multifactor authentication.",
+      "example": "Employees at a Mombasa logistics firm sign in once with their work account and reach both email and internal apps."
+    },
+    {
+      "id": 13,
+      "topic": "Azure architecture and services",
+      "concept": "rbac",
+      "question": "A manager wants a junior engineer to restart virtual machines in one resource group, but not delete anything else. What should be used?",
+      "options": [
+        "Azure role-based access control (RBAC)",
+        "Resource tags",
+        "Azure Blob Storage",
+        "Availability zones"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Azure RBAC assigns roles to users, groups or apps at a specific scope, so people get only the permissions they need (the principle of least privilege).",
+      "example": "Like giving a shop assistant the key to the till, but not the key to the store room."
+    },
+    {
+      "id": 14,
+      "topic": "Management and governance",
+      "concept": "azure-policy",
+      "question": "An organisation wants to enforce rules about how Azure resources are configured, such as allowing only certain regions. Which service is designed for this?",
+      "options": [
+        "Azure Policy",
+        "Azure Monitor",
+        "Azure Advisor",
+        "Azure Cloud Shell"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Azure Policy creates, assigns and evaluates rules for resource configurations. It can deny non-compliant deployments and report on compliance.",
+      "example": "A company sets a policy that only allows resources in the South Africa North region."
+    },
+    {
+      "id": 15,
+      "topic": "Management and governance",
+      "concept": "resource-locks",
+      "question": "An administrator wants to stop anyone from accidentally deleting a production database, even people who have permission to manage it. What should they apply?",
+      "options": [
+        "A resource tag",
+        "A resource lock",
+        "Azure Advisor",
+        "An availability zone"
+      ],
+      "correctAnswer": 1,
+      "explanation": "A resource lock (Delete or ReadOnly) prevents accidental deletion or changes. It applies even to users with the right RBAC permissions, until the lock is removed.",
+      "example": "The team puts a Delete lock on the customer database so a mistaken click cannot remove it."
+    },
+    {
+      "id": 16,
+      "topic": "Management and governance",
+      "concept": "cost-management",
+      "question": "A finance team wants to track Azure spending and receive an alert when costs approach a monthly budget. Which tool should they use?",
+      "options": [
+        "Microsoft Cost Management",
+        "Azure Service Health",
+        "Microsoft Entra ID",
+        "Azure Functions"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Microsoft Cost Management lets you analyse spending, set budgets and receive alerts when costs approach or exceed a threshold.",
+      "example": "A startup sets a budget of KES 50,000 per month and gets an email when it reaches 80%."
+    },
+    {
+      "id": 17,
+      "topic": "Management and governance",
+      "concept": "advisor",
+      "question": "Which Azure service analyses your deployed resources and gives personalised recommendations to improve cost, security, reliability and performance?",
+      "options": [
+        "Azure Advisor",
+        "Azure Policy",
+        "Resource locks",
+        "Azure Blob Storage"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Azure Advisor reviews your resource configuration and usage, then recommends improvements, such as resizing or shutting down underused virtual machines.",
+      "example": "Advisor notices a VM that has been idle for weeks and suggests resizing it to save money."
+    },
+    {
+      "id": 18,
+      "topic": "Management and governance",
+      "concept": "tags",
+      "question": "A company wants to label resources by department (for example Finance or Marketing) so it can see which team is responsible for which costs. What should it use?",
+      "options": [
+        "Resource tags",
+        "Availability zones",
+        "Resource locks",
+        "Azure regions"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Tags are name–value pairs attached to resources. They help organise resources and break down costs in reports.",
+      "example": "Every resource gets a tag such as department = Marketing, so the monthly bill can be split by team."
+    },
+    {
+      "id": 19,
+      "topic": "Management and governance",
+      "concept": "service-health",
+      "question": "Which service tells you about Azure outages and planned maintenance that could affect the specific resources you use?",
+      "options": [
+        "Azure Service Health",
+        "Azure Advisor",
+        "Azure Policy",
+        "Microsoft Cost Management"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Azure Service Health gives a personalised view of Azure service issues, planned maintenance and health advisories for the regions and services you use.",
+      "example": "During an outage, the team checks Service Health to confirm the problem is on Azure's side, not in its own code."
+    }
+  ]
+}

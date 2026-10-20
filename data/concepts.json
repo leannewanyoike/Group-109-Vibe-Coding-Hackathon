@@ -1,0 +1,218 @@
+[
+  {
+    "id": "elasticity",
+    "title": "Elasticity and scalability",
+    "topic": "Cloud concepts",
+    "explanation": "Scalability is the ability to add resources to handle more load. Elasticity means this happens automatically, adding resources when demand rises and removing them when it falls.",
+    "example": "A Kenyan e-commerce site adds servers during a big sale, then releases them afterwards so it stops paying for them.",
+    "confusion": "High availability is about staying up when something fails; elasticity is about matching capacity to demand.",
+    "practice": {
+      "question": "Automatically removing servers at night when traffic drops is an example of what?",
+      "answer": "Elasticity."
+    }
+  },
+  {
+    "id": "shared-responsibility",
+    "title": "Shared responsibility model",
+    "topic": "Cloud concepts",
+    "explanation": "Security and maintenance are split between Microsoft and the customer. Microsoft always manages the physical datacenter. The customer always owns its data, devices, accounts and identities. Everything in between depends on IaaS, PaaS or SaaS.",
+    "example": "Renting a flat: the landlord maintains the building, but you lock your own door and look after your belongings.",
+    "confusion": "Moving to the cloud does not hand all responsibility to Microsoft. The customer is always responsible for its data and who can access it.",
+    "practice": {
+      "question": "In SaaS, who is responsible for the information stored in the app?",
+      "answer": "The customer."
+    }
+  },
+  {
+    "id": "capex-opex",
+    "title": "CapEx vs OpEx and the consumption model",
+    "topic": "Cloud concepts",
+    "explanation": "Capital expenditure (CapEx) is an upfront payment for physical assets. Operational expenditure (OpEx) is ongoing spending on services. Cloud computing mostly uses a consumption-based OpEx model: you pay for what you use.",
+    "example": "Buying a delivery van is CapEx. Paying a boda boda rider per trip is OpEx.",
+    "confusion": "OpEx does not always mean cheaper; it means you pay as you go and avoid large upfront costs.",
+    "practice": {
+      "question": "Building your own datacenter is mainly which type of expense?",
+      "answer": "CapEx."
+    }
+  },
+  {
+    "id": "service-models",
+    "title": "IaaS, PaaS and SaaS",
+    "topic": "Cloud concepts",
+    "explanation": "IaaS gives you virtual machines, storage and networking, and you manage the OS upwards. PaaS gives you a managed platform where you deploy code. SaaS gives you a finished application you simply use.",
+    "example": "Pizza analogy: IaaS is renting a kitchen, PaaS is ordering a pizza base you top yourself, SaaS is eating at the restaurant.",
+    "confusion": "PaaS and SaaS are both managed, but with PaaS you still write and deploy the application.",
+    "practice": {
+      "question": "Azure Virtual Machines is an example of which service model?",
+      "answer": "IaaS."
+    }
+  },
+  {
+    "id": "cloud-models",
+    "title": "Public, private and hybrid cloud",
+    "topic": "Cloud concepts",
+    "explanation": "Public cloud is shared infrastructure run by a provider such as Microsoft. Private cloud is used by a single organisation. Hybrid cloud connects the two so workloads can run where they fit best.",
+    "example": "A hospital keeps patient records on its own servers but uses Azure for its appointment booking site.",
+    "confusion": "Multi-cloud means using more than one public cloud provider; hybrid means mixing private and public.",
+    "practice": {
+      "question": "Which model gives the most control over the physical hardware?",
+      "answer": "Private cloud."
+    }
+  },
+  {
+    "id": "resource-groups",
+    "title": "Resource groups",
+    "topic": "Azure architecture and services",
+    "explanation": "A resource group is a logical container for Azure resources that share a lifecycle. Each resource is in exactly one resource group, and deleting the group deletes everything in it.",
+    "example": "A matatu-tracking app keeps its web app, database and storage in one resource group called rg-matatu-prod.",
+    "confusion": "Resource groups are logical, not physical. Resources inside one group can be in different regions.",
+    "practice": {
+      "question": "Can a resource belong to two resource groups at once?",
+      "answer": "No, each resource belongs to exactly one."
+    }
+  },
+  {
+    "id": "availability-zones",
+    "title": "Regions and availability zones",
+    "topic": "Azure architecture and services",
+    "explanation": "A region is a geographic area containing one or more datacenters. Availability zones are physically separate locations inside a region, each with independent power, cooling and networking.",
+    "example": "Running an app in three zones is like a bank having three branches in one city: if one closes, customers use another.",
+    "confusion": "Zones protect against a datacenter failure inside one region; region pairs help with region-wide disasters.",
+    "practice": {
+      "question": "Do all Azure regions support availability zones?",
+      "answer": "No, only some regions do."
+    }
+  },
+  {
+    "id": "storage",
+    "title": "Azure Storage services",
+    "topic": "Azure architecture and services",
+    "explanation": "Azure Storage includes Blob Storage for unstructured objects, Azure Files for shared file folders, Queue Storage for messages between app components, and Table Storage for simple structured data.",
+    "example": "Product photos go in Blob Storage; order messages waiting to be processed go in a queue.",
+    "confusion": "Azure Files behaves like a shared network drive; Blob Storage is accessed as objects over HTTP.",
+    "practice": {
+      "question": "Which service would you use for backup files and video?",
+      "answer": "Azure Blob Storage."
+    }
+  },
+  {
+    "id": "serverless",
+    "title": "Serverless computing with Azure Functions",
+    "topic": "Azure architecture and services",
+    "explanation": "Serverless means the provider manages the servers and scaling. Azure Functions runs code in response to triggers such as HTTP requests, timers or new messages.",
+    "example": "A function runs every night at midnight to send daily sales totals to the shop owner.",
+    "confusion": "Serverless still uses servers; you just don't manage them.",
+    "practice": {
+      "question": "What starts an Azure Function running?",
+      "answer": "A trigger, such as an HTTP request, a timer or a new message."
+    }
+  },
+  {
+    "id": "hierarchy",
+    "title": "Management groups, subscriptions and resource groups",
+    "topic": "Azure architecture and services",
+    "explanation": "Azure organises resources in levels: management groups contain subscriptions, subscriptions contain resource groups, and resource groups contain resources. Policies and permissions applied higher up are inherited by everything below.",
+    "example": "A company could use one subscription for Production and another for Testing, so their bills stay separate.",
+    "confusion": "A subscription is a billing and access boundary; a resource group is an organising container.",
+    "practice": {
+      "question": "If you apply a policy to a subscription, does it affect the resource groups inside it?",
+      "answer": "Yes, it is inherited."
+    }
+  },
+  {
+    "id": "entra-id",
+    "title": "Microsoft Entra ID",
+    "topic": "Azure architecture and services",
+    "explanation": "Microsoft Entra ID (formerly Azure Active Directory) is Microsoft's cloud identity service. It handles sign-in, single sign-on, multifactor authentication and conditional access.",
+    "example": "A staff member signs in once and can open email, the HR portal and the finance app without signing in again.",
+    "confusion": "Authentication proves who you are; authorisation (for example RBAC) decides what you can do.",
+    "practice": {
+      "question": "Requiring a code from a phone app in addition to a password is called what?",
+      "answer": "Multifactor authentication (MFA)."
+    }
+  },
+  {
+    "id": "rbac",
+    "title": "Azure role-based access control (RBAC)",
+    "topic": "Azure architecture and services",
+    "explanation": "Azure RBAC controls who can do what by assigning a role (such as Reader, Contributor or Owner) to a user, group or app at a scope: a management group, subscription, resource group or single resource.",
+    "example": "At a supermarket, cashiers can use the till, supervisors can issue refunds and only the manager can open the safe.",
+    "confusion": "RBAC controls what people can do; Azure Policy controls what resources are allowed to look like.",
+    "practice": {
+      "question": "Which built-in role lets someone view resources but not change them?",
+      "answer": "Reader."
+    }
+  },
+  {
+    "id": "azure-policy",
+    "title": "Azure Policy",
+    "topic": "Management and governance",
+    "explanation": "Azure Policy lets you create rules for how resources must be configured, evaluate existing resources for compliance, and block deployments that break the rules.",
+    "example": "A company only allows resources in South Africa North and requires every resource to have a department tag.",
+    "confusion": "Policy governs resource settings; RBAC governs user permissions; locks prevent deletion or changes.",
+    "practice": {
+      "question": "Which service would stop someone creating a VM in a region your company doesn't allow?",
+      "answer": "Azure Policy."
+    }
+  },
+  {
+    "id": "resource-locks",
+    "title": "Resource locks",
+    "topic": "Management and governance",
+    "explanation": "Resource locks prevent accidental changes. A Delete lock allows changes but not deletion; a ReadOnly lock prevents both changes and deletion. Locks apply to everyone until removed.",
+    "example": "Putting a padlock on the shop's main power switch so nobody turns it off by mistake.",
+    "confusion": "Even an Owner cannot delete a locked resource without removing the lock first.",
+    "practice": {
+      "question": "Which lock type still allows you to change a resource's settings?",
+      "answer": "A Delete (CanNotDelete) lock."
+    }
+  },
+  {
+    "id": "cost-management",
+    "title": "Cost management and pricing tools",
+    "topic": "Management and governance",
+    "explanation": "Microsoft Cost Management shows current and past spending, and lets you set budgets and alerts. The Pricing calculator estimates the cost of new resources; the TCO calculator compares on-premises costs with Azure.",
+    "example": "A startup sets a monthly budget and gets a warning email before it overspends.",
+    "confusion": "The Pricing calculator estimates future costs; Cost Management tracks what you have actually spent.",
+    "practice": {
+      "question": "Which tool compares running servers on-premises with running them in Azure?",
+      "answer": "The Total Cost of Ownership (TCO) calculator."
+    }
+  },
+  {
+    "id": "advisor",
+    "title": "Azure Advisor",
+    "topic": "Management and governance",
+    "explanation": "Azure Advisor analyses your resources and gives personalised recommendations in five categories: reliability, security, performance, operational excellence and cost.",
+    "example": "Advisor suggests shutting down a test VM that has been idle for two weeks.",
+    "confusion": "Advisor recommends improvements; Azure Policy enforces rules.",
+    "practice": {
+      "question": "Does Azure Advisor make changes automatically?",
+      "answer": "No, it gives recommendations that you choose whether to act on."
+    }
+  },
+  {
+    "id": "tags",
+    "title": "Resource tags",
+    "topic": "Management and governance",
+    "explanation": "Tags are name–value pairs (such as environment = production) added to resources. They help organise resources, automate tasks and break down costs.",
+    "example": "Labelling every resource with project = school-portal makes it easy to see that project's monthly cost.",
+    "confusion": "Tags organise and report; they do not control access or block changes.",
+    "practice": {
+      "question": "Can Azure Policy require that resources have a specific tag?",
+      "answer": "Yes."
+    }
+  },
+  {
+    "id": "service-health",
+    "title": "Azure Service Health and Azure Monitor",
+    "topic": "Management and governance",
+    "explanation": "Azure Service Health reports Azure-side outages, planned maintenance and advisories that affect your services and regions. Azure Monitor collects metrics and logs from your own resources and applications.",
+    "example": "Service Health is like a city water board notice about repairs; Monitor is your own water meter.",
+    "confusion": "Azure status shows global Azure health; Service Health is personalised to what you use.",
+    "practice": {
+      "question": "Which service collects performance metrics from your virtual machines?",
+      "answer": "Azure Monitor."
+    }
+  }
+]

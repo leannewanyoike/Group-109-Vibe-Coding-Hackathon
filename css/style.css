@@ -1,0 +1,622 @@
+/* ==========================================================================
+   CloudReady stylesheet — owned by Person 1
+   1. Variables   2. Base   3. Header & footer   4. Buttons & forms
+   5. Home        6. Quiz   7. Mastery bars      8. Dashboard
+   9. Study Buddy 10. About 11. Responsive        12. Dark mode
+   ========================================================================== */
+
+/* 1. Variables ------------------------------------------------------------ */
+:root {
+  --ink: #12355b;          /* headings */
+  --sky: #2f7fc1;          /* main accent, buttons */
+  --sky-soft: #e7f1fa;
+  --sun: #f2b33d;          /* only for the 80% target line and focus ring */
+  --right: #2e7d4f;
+  --right-soft: #e8f4ec;
+  --wrong: #b84a32;
+  --wrong-soft: #fbece8;
+  --text: #1c2b3d;
+  --muted: #5a6b80;
+  --line: #d5dfeb;
+  --surface: #ffffff;
+  --page: #f2f6fa;
+
+  /* Topic colours — like QuickNotes' category colours */
+  --topic-cloud: #2f7fc1;
+  --topic-architecture: #6a4fb3;
+  --topic-governance: #1f8a70;
+
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --radius: 12px;
+  color-scheme: light;
+}
+
+/* 2. Base ----------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  line-height: 1.2;
+  margin: 0 0 0.6em;
+}
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.1rem; margin-top: 1.4em; }
+p  { margin: 0 0 0.8em; }
+a  { color: var(--sky); }
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+.option:focus-within {
+  outline: 3px solid var(--sun);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+[hidden] { display: none !important; }
+
+.site-main {
+  width: min(820px, 92%);
+  margin: 24px auto 40px;
+  flex: 1;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(20px, 4vw, 32px);
+  margin-bottom: 20px;
+}
+
+.page-title {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 800;
+}
+
+.lede {
+  font-size: 1.2rem;
+  color: var(--muted);
+  max-width: 46ch;
+}
+
+.status { color: var(--muted); }
+.status-error {
+  color: var(--wrong);
+  background: var(--wrong-soft);
+  padding: 12px 16px;
+  border-radius: 8px;
+}
+
+.fine-print {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+/* 3. Header & footer ------------------------------------------------------ */
+.site-header {
+  width: min(820px, 92%);
+  margin: 0 auto;
+  padding: 20px 0 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.site-header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.site-header nav a {
+  padding: 6px 10px;
+  color: var(--muted);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+}
+.site-header nav a:hover { color: var(--ink); }
+.site-header nav a[aria-current="page"] {
+  color: var(--ink);
+  border-bottom-color: var(--sky);
+}
+
+.site-footer {
+  width: min(820px, 92%);
+  margin: 0 auto 32px;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+/* 4. Buttons & forms ------------------------------------------------------ */
+.btn {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+}
+.btn-primary {
+  background: var(--sky);
+  border-color: var(--sky);
+  color: #fff;
+}
+.btn-primary:hover:not(:disabled) { filter: brightness(1.08); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-secondary {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--ink);
+}
+.btn-secondary:hover { border-color: var(--sky); }
+.btn-danger {
+  background: transparent;
+  border-color: var(--wrong);
+  color: var(--wrong);
+  padding: 8px 16px;
+}
+.btn-danger:hover { background: var(--wrong-soft); }
+.btn-wide { width: 100%; margin-top: 8px; }
+
+.text-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: var(--sky);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.field-label {
+  display: block;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+input[type="search"],
+textarea {
+  width: 100%;
+  padding: 11px 12px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+textarea { resize: vertical; }
+
+.error-message {
+  color: var(--wrong);
+  font-weight: 600;
+  min-height: 1.5em;
+  margin: 8px 0 0;
+}
+
+/* 5. Home ----------------------------------------------------------------- */
+#start-section { padding: 24px 0 8px; }
+
+.hero-title {
+  font-size: clamp(2.4rem, 7vw, 4.2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  max-width: 12ch;
+}
+
+.choices-heading {
+  font-size: 1.2rem;
+  margin-top: 36px;
+}
+
+.topic-cards {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.topic-card {
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--topic-color, var(--sky));
+  border-radius: 6px;
+  padding: 16px;
+  color: var(--text);
+}
+.topic-card:hover { background: var(--sky-soft); }
+.topic-card-name {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 1.05rem;
+}
+.topic-card-count { color: var(--muted); font-size: 0.9rem; }
+
+/* Each topic sets --topic-color once; cards, labels and buttons reuse it */
+.topic-cloud-concepts { --topic-color: var(--topic-cloud); }
+.topic-azure-architecture-and-services { --topic-color: var(--topic-architecture); }
+.topic-management-and-governance { --topic-color: var(--topic-governance); }
+
+/* 6. Quiz ----------------------------------------------------------------- */
+.quiz-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.progress-track {
+  height: 4px;
+  background: var(--line);
+  border-radius: 4px;
+  margin: 8px 0 22px;
+  overflow: hidden;
+}
+#progress-fill {
+  height: 100%;
+  width: 0;
+  background: var(--sky);
+  transition: width 0.3s ease;
+}
+
+.question-topic {
+  color: var(--topic-color, var(--sky));
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+.question-topic:empty { display: none; }
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.question-text {
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-size: clamp(1.25rem, 3vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.25;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.options {
+  display: grid;
+  gap: 10px;
+}
+
+.option {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  padding: 13px 15px;
+  cursor: pointer;
+  background: var(--surface);
+}
+.option input {
+  /* The radio is hidden visually; the whole label is the click target */
+  position: absolute;
+  opacity: 0;
+}
+/* :not() keeps this from overriding the right/wrong colours after checking */
+.option:not(.is-correct, .is-wrong):hover,
+.option:not(.is-correct, .is-wrong):has(input:checked) {
+  border-color: var(--sky);
+  background: var(--sky-soft);
+}
+.option:has(input:disabled) { cursor: default; }
+
+.option-letter {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--sky-soft);
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.option.is-correct { border-color: var(--right); background: var(--right-soft); }
+.option.is-correct .option-letter { background: var(--right); color: #fff; }
+.option.is-wrong { border-color: var(--wrong); background: var(--wrong-soft); }
+.option.is-wrong .option-letter { background: var(--wrong); color: #fff; }
+
+.feedback {
+  border-left: 5px solid;
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 16px 0 8px;
+}
+.feedback h3 { margin-top: 0; }
+.feedback-right { background: var(--right-soft); border-color: var(--right); }
+.feedback-wrong { background: var(--wrong-soft); border-color: var(--wrong); }
+.feedback-example { color: var(--muted); }
+
+.score {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(4rem, 14vw, 6.5rem);
+  line-height: 1;
+  color: var(--ink);
+  margin: 4px 0 8px;
+}
+.score span { font-size: 0.45em; color: var(--muted); }
+
+/* 7. Mastery bars --------------------------------------------------------- */
+.mastery { margin: 18px 0; }
+.mastery-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.bar {
+  position: relative;
+  height: 14px;
+  margin: 6px 0 4px;
+  background: var(--line);
+  border-radius: 3px;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--sky);
+  transition: width 0.5s ease;
+}
+.bar-met .bar-fill { background: var(--right); }
+.bar-below .bar-fill { background: var(--wrong); }
+.bar-target {
+  position: absolute;
+  top: -5px;
+  bottom: -5px;
+  width: 4px;
+  margin-left: -2px;
+  background: var(--sun);
+  border-radius: 2px;
+}
+.mastery-evidence {
+  color: var(--muted);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* 8. Dashboard ------------------------------------------------------------ */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  margin: 0 0 20px;
+}
+.stats div { border-top: 3px solid var(--sky); padding-top: 8px; }
+.stats dt { color: var(--muted); font-size: 0.9rem; }
+.stats dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2rem;
+  color: var(--ink);
+}
+
+.readiness {
+  border-radius: 8px;
+  padding: 14px 18px;
+  background: var(--sky-soft);
+}
+.readiness-strong { background: var(--right-soft); }
+.readiness-early { background: var(--wrong-soft); }
+.readiness p:last-child { margin-bottom: 0; }
+
+.recommend { border-left: 6px solid var(--sun); }
+
+.section-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+.section-header h2 { margin: 0; }
+
+.history {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.history li {
+  display: grid;
+  grid-template-columns: 1.3fr 1.3fr auto;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.95rem;
+}
+.history-date { color: var(--muted); }
+.history-score { font-weight: 600; text-align: right; }
+
+.empty { text-align: center; }
+
+/* 9. Study Buddy ---------------------------------------------------------- */
+.buddy-columns {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) 2fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.concept-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.concept-btn {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--topic-color, var(--sky));
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--text);
+}
+.concept-btn:hover,
+.concept-btn[aria-current="true"] { background: var(--sky-soft); }
+.concept-btn-title { display: block; font-weight: 600; color: var(--ink); }
+.concept-btn-topic { font-size: 0.8rem; color: var(--muted); }
+
+.empty-hint { color: var(--muted); padding: 8px 0; }
+
+.missed { margin-bottom: 16px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: 1px solid var(--wrong);
+  background: var(--wrong-soft);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 4px 12px;
+  text-align: left;
+}
+
+.practice-answer { font-weight: 600; color: var(--right); }
+
+.ask-form {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.ask-form .btn { margin-top: 8px; }
+
+.ai-answer {
+  margin-top: 16px;
+  padding: 16px 18px;
+  border-radius: 8px;
+  background: var(--sky-soft);
+}
+.ai-answer h3 { margin-top: 0; }
+
+#sources { margin-top: 20px; }
+
+/* 10. About --------------------------------------------------------------- */
+.prose { max-width: 70ch; }
+.prose section { margin-bottom: 28px; }
+.team { padding-left: 1.2em; }
+
+/* 11. Responsive (same 600px breakpoint as QuickNotes) -------------------- */
+@media (max-width: 760px) {
+  .buddy-columns { grid-template-columns: 1fr; }
+  .concept-list { max-height: 40vh; }
+}
+
+@media (max-width: 600px) {
+  .actions { flex-direction: column; }
+  .actions .btn { width: 100%; }
+  .history li { grid-template-columns: 1fr auto; }
+  .history-date { grid-column: 1 / -1; font-size: 0.85rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+
+/* 12. Dark mode ----------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #cfe3f7;
+    --sky: #6aaee6;
+    --sky-soft: #17324d;
+    --right: #6cc792;
+    --right-soft: #15301f;
+    --wrong: #ec8a73;
+    --wrong-soft: #3a1d16;
+    --text: #e3ebf3;
+    --muted: #9db0c4;
+    --line: #2b4058;
+    --surface: #13212f;
+    --page: #0c1722;
+    --topic-cloud: #6aaee6;
+    --topic-architecture: #a993e6;
+    --topic-governance: #5ec4a6;
+    color-scheme: dark;
+  }
+  .btn-primary { color: #08131d; }
+}
