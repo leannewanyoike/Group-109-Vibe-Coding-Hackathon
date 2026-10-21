@@ -1,11 +1,11 @@
-# CloudReady API Design
+# CloudGenius API Design
 
-A REST API for a future version of CloudReady with learner accounts and an AI
+A REST API for a future version of CloudGenius with learner accounts and an AI
 tutor. **Version 1 of the app does not need it**: questions come from
 `data/*.json` and progress is saved in `localStorage`. This design shows how the
 app would grow, in the same format as the Day 5 Library API.
 
-**Base URL:** `https://api.cloudready.example.com/v1`
+**Base URL:** `https://api.cloudgenius.example.com/v1`
 
 All requests and responses use JSON (`Content-Type: application/json`).
 

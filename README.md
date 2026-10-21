@@ -1,10 +1,10 @@
-# CloudReady
+# CloudGenius
 
-CloudReady is an unofficial AZ-900 (Azure Fundamentals) practice web app. Learners take a quiz, see exactly why each answer is right or wrong, track their mastery across the three official exam domains, and use a Study Buddy to understand the concepts they missed.
+CloudGenius is an unofficial AZ-900 (Azure Fundamentals) practice web app. Learners take a quiz, see exactly why each answer is right or wrong, track their mastery across the three official exam domains, and use a Study Buddy to understand the concepts they missed.
 
 It is built with semantic HTML, CSS (Flexbox, Grid and media queries) and vanilla JavaScript, using only the skills from the [Web Foundations course](https://github.com/leannewanyoike/web-foundations). There are no frameworks, no build steps and no backend.
 
-> CloudReady is not affiliated with or endorsed by Microsoft. All questions are original practice items, not exam questions. Verify content against the [official AZ-900 study guide](https://learn.microsoft.com/credentials/certifications/resources/study-guides/az-900).
+> CloudGenius is not affiliated with or endorsed by Microsoft. All questions are original practice items, not exam questions. Verify content against the [official AZ-900 study guide](https://learn.microsoft.com/credentials/certifications/resources/study-guides/az-900).
 
 ## Features
 
@@ -27,7 +27,7 @@ It is built with semantic HTML, CSS (Flexbox, Grid and media queries) and vanill
 
 No build tools or dependencies are needed, but the app **must be served** (not double-clicked) because it loads JSON files with `fetch`.
 
-1. Open the `cloudready` folder in VS Code.
+1. Open the `cloudgenius` folder in VS Code.
 2. Right-click `index.html` → **Open with Live Server** (port 5501 is preset in `.vscode/settings.json`).
 3. Or use a local static server:
    ```bash
@@ -42,14 +42,14 @@ No build tools or dependencies are needed, but the app **must be served** (not d
 
 This repository includes a `render.yaml` Blueprint for the static site. Push the
 repository to GitHub, sign in to Render, choose **New → Blueprint**, connect this
-repository, and deploy the `cloudready-az900` static site. No build command or
+repository, and deploy the `cloudgenius-az900` static site. No build command or
 server process is required. The app uses browser `localStorage`, so each learner's
 practice history stays in that browser and is not shared across devices.
 
 ## Project structure
 
 ```
-cloudready/
+cloudgenius/
 ├── index.html          # Practise: choose a quiz, answer questions, see results
 ├── dashboard.html      # My progress: mastery, readiness, recommendation, history
 ├── study-buddy.html    # Study Buddy: search concepts and test yourself
@@ -78,7 +78,7 @@ cloudready/
 
 ## Web Foundations skills applied
 
-| Course skill | Where it was learned | Where CloudReady uses it |
+| Course skill | Where it was learned | Where CloudGenius uses it |
 | --- | --- | --- |
 | Semantic, multi-page HTML | Day 1 (`index.html`, `about.html`) | Four linked pages with `header`, `nav`, `main`, `section`, `footer` |
 | CSS layout and responsive design | Day 2 | CSS variables, Flexbox header and actions, Grid topic cards and dashboard stats, 600px breakpoint |
@@ -124,7 +124,7 @@ See **[docs/vibe-coding-guide.md](docs/vibe-coding-guide.md)** for the ground-ru
 ```
 
 `topic` must be one of the three official domains, `concept` must match an `id` in `concepts.json`, and `id` values are never reused.
-Each index in `incorrectExplanations` must be a wrong option index; explain every incorrect option. Microsoft Learn and the three domains supplied by the user define the exam scope. The linked Quizlet set and YouTube video are topic references only; all CloudReady question wording, choices, and explanations are original. Video captions were unavailable, and no questions or answers were copied.
+Each index in `incorrectExplanations` must be a wrong option index; explain every incorrect option. Microsoft Learn and the three domains supplied by the user define the exam scope. The linked Quizlet set and YouTube video are topic references only; all CloudGenius question wording, choices, and explanations are original. Video captions were unavailable, and no questions or answers were copied.
 
 ## Demo checklist
 
@@ -135,7 +135,7 @@ Each index in `incorrectExplanations` must be a wrong option index; explain ever
 - [ ] The Study Buddy explains the missed concept
 - [ ] `tests.html` shows 0 failed
 
-**Five-minute demo story:** the problem → CloudReady → answer a question wrongly and read the explanation → open My progress and follow the recommendation → open the missed concept in the Study Buddy → impact and next steps.
+**Five-minute demo story:** the problem → CloudGenius → answer a question wrongly and read the explanation → open My progress and follow the recommendation → open the missed concept in the Study Buddy → impact and next steps.
 
 ## Optional stretch: AI tutor
 

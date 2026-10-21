@@ -1,4 +1,4 @@
-// ── CloudReady logic ───────────────────────────────────────────────
+// ── CloudGenius logic ───────────────────────────────────────────────
 // Pure functions: they take data in and return data out.
 // They never touch the page or localStorage, so they are easy to test
 // (see tests.html). Owned by Person 3.

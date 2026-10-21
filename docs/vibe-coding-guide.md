@@ -1,4 +1,4 @@
-# Vibe coding CloudReady with Web Foundations skills
+# Vibe coding CloudGenius with Web Foundations skills
 
 Vibe coding means describing what you want to an AI coding assistant (Copilot,
 Claude, ChatGPT, Cursor…) and letting it write the first draft. In this hackathon
@@ -15,7 +15,7 @@ Paste this at the start of **every** AI session. It stops the assistant from
 reaching for tools the course didn't cover.
 
 ```text
-You are helping a beginner team build CloudReady, an unofficial AZ-900 practice
+You are helping a beginner team build CloudGenius, an unofficial AZ-900 practice
 web app, for a hackathon. We completed a Web Foundations course, so follow these
 rules exactly:
 

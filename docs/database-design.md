@@ -1,6 +1,6 @@
-# CloudReady Database Design
+# CloudGenius Database Design
 
-Version 1 of CloudReady stores questions in JSON files and progress in
+Version 1 of CloudGenius stores questions in JSON files and progress in
 `localStorage`. This design is for a future version where learners sign in and
 their progress follows them between devices. The SQL is in `schema.sql` and runs
 in SQLite.

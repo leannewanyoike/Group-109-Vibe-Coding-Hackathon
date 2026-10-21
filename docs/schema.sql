@@ -1,4 +1,4 @@
--- CloudReady database schema (SQLite)
+-- CloudGenius database schema (SQLite)
 -- Design for a future version with learner accounts. See database-design.md.
 
 PRAGMA foreign_keys = ON;
