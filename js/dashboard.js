@@ -14,8 +14,11 @@ const recommendLink = document.querySelector("#recommend-link");
 const historyCount = document.querySelector("#history-count");
 const historyList = document.querySelector("#history-list");
 const clearAllBtn = document.querySelector("#clear-all-btn");
+const reviewList = document.querySelector("#review-list");
+const reviewEmpty = document.querySelector("#review-empty");
 
 let topics = [];
+let questionsById = {};
 
 function formatDate(isoString) {
   return new Date(isoString).toLocaleString(undefined, {
@@ -52,6 +55,36 @@ function renderHistory(attempts) {
     li.appendChild(el("span", "history-score",
       `${attempt.correctCount}/${attempt.totalQuestions} (${attempt.score}%)`));
     historyList.appendChild(li);
+  });
+}
+
+function renderReview(attempts) {
+  reviewList.innerHTML = "";
+
+  const missed = attempts.flatMap((attempt) =>
+    (attempt.answers || [])
+      .filter((answer) => !answer.correct)
+      .map((answer) => ({ answer: answer, attempt: attempt }))
+  ).reverse();
+
+  reviewEmpty.hidden = missed.length > 0;
+  missed.forEach(({ answer, attempt }) => {
+    const question = questionsById[answer.questionId];
+    if (!question) return;
+
+    const item = el("li", "review-item");
+    item.appendChild(el("p", "review-date", formatDate(attempt.date)));
+    item.appendChild(el("h3", "", question.question));
+    item.appendChild(el("p", "", `Your answer: ${question.options[answer.selected]}`));
+    item.appendChild(el("p", "review-explanation",
+      question.incorrectExplanations?.[answer.selected] || "Review the explanation below to see how this choice differs from the correct answer."));
+    item.appendChild(el("p", "", `Correct answer: ${question.options[question.correctAnswer]}`));
+    item.appendChild(el("p", "", question.explanation));
+
+    const link = el("a", "text-link", "Review this concept in Study Buddy");
+    link.href = `study-buddy.html?concept=${encodeURIComponent(question.concept)}`;
+    item.appendChild(link);
+    reviewList.appendChild(item);
   });
 }
 
@@ -94,6 +127,7 @@ function render() {
   }
 
   renderHistory(attempts);
+  renderReview(attempts);
 }
 
 // Clear all — asks for confirmation first, like QuickNotes
@@ -108,6 +142,7 @@ async function init() {
   try {
     const data = await loadQuestions(); // we need the official topic list
     topics = data.topics;
+    questionsById = Object.fromEntries(data.questions.map((question) => [question.id, question]));
     render();
   } catch (error) {
     statusText.textContent = LOAD_ERROR_MESSAGE;

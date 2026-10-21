@@ -6,6 +6,14 @@
 const TARGET_MASTERY = 80;      // the yellow target line on mastery bars
 const MIN_TOPIC_ANSWERS = 2;    // answers needed before a topic % is shown
 const MIN_TOTAL_ANSWERS = 10;   // answers needed before a readiness estimate
+const MIXED_EXAM_QUESTION_COUNT = 50;
+const EXAM_DURATION_SECONDS = 105 * 60;
+
+const EXAM_TOPIC_WEIGHTS = {
+  "Cloud concepts": 0.275,
+  "Azure architecture and services": 0.375,
+  "Management and governance": 0.35
+};
 
 // Randomly reorders a copy of an array (Fisher–Yates shuffle).
 function shuffle(list) {
@@ -15,6 +23,59 @@ function shuffle(list) {
     [copy[i], copy[j]] = [copy[j], copy[i]];
   }
   return copy;
+}
+
+function formatCountdown(totalSeconds) {
+  const secondsRemaining = Math.max(0, Math.floor(totalSeconds));
+  const hours = Math.floor(secondsRemaining / 3600);
+  const minutes = Math.floor((secondsRemaining % 3600) / 60);
+  const seconds = secondsRemaining % 60;
+  return `${hours}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
+
+// Builds a fresh exam close to the official AZ-900 domain weightings.
+function buildMixedExam(questions, topics, count = MIXED_EXAM_QUESTION_COUNT) {
+  const weights = topics.map((topic) => EXAM_TOPIC_WEIGHTS[topic] || 0);
+  const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
+  const normalizedWeights = totalWeight > 0
+    ? weights.map((weight) => weight / totalWeight)
+    : topics.map(() => 1 / topics.length);
+  const exactQuotas = normalizedWeights.map((weight) => weight * count);
+  const quotas = exactQuotas.map(Math.floor);
+  let remainingSlots = count - quotas.reduce((sum, quota) => sum + quota, 0);
+  const remainderOrder = exactQuotas
+    .map((quota, index) => ({ index, remainder: quota - Math.floor(quota) }))
+    .sort((a, b) => b.remainder - a.remainder);
+
+  for (let index = 0; index < remainingSlots; index++) {
+    quotas[remainderOrder[index].index] += 1;
+  }
+
+  const exam = [];
+  topics.forEach((topic, index) => {
+    const topicPool = shuffle(questions.filter((question) => question.topic === topic));
+    const quota = quotas[index];
+    if (topicPool.length < quota) {
+      throw new Error(`Not enough ${topic} questions to build a ${count}-question exam.`);
+    }
+
+    const selectedConcepts = new Set();
+    const conceptFirstQuestions = topicPool.filter((question) => {
+      if (selectedConcepts.has(question.concept)) return false;
+      selectedConcepts.add(question.concept);
+      return true;
+    }).slice(0, quota);
+    const selectedIds = new Set(conceptFirstQuestions.map((question) => question.id));
+    const remainingQuestions = shuffle(topicPool.filter((question) => !selectedIds.has(question.id)));
+
+    exam.push(...conceptFirstQuestions, ...remainingQuestions.slice(0, quota - conceptFirstQuestions.length));
+  });
+
+  if (exam.length !== count) {
+    throw new Error(`Could not build an exam with ${count} questions.`);
+  }
+
+  return shuffle(exam);
 }
 
 // Returns a percentage rounded to a whole number, or null if total is 0.
@@ -173,6 +234,65 @@ function searchConcepts(concepts, word) {
     c.topic.toLowerCase().includes(term) ||
     c.explanation.toLowerCase().includes(term)
   );
+}
+
+// Finds the best-supported concept and practice question for a tutor query.
+function findTutorMatch(text, concepts, questions, preferredConceptId = null) {
+  const stopWords = new Set([
+    "a", "about", "an", "and", "are", "can", "do", "does", "for", "from",
+    "how", "i", "in", "is", "it", "me", "my", "of", "on", "or", "please",
+    "help", "need", "please", "service", "should", "support", "team", "tell",
+    "that", "the", "this", "to", "use", "using", "want", "what", "when",
+    "where", "which", "who", "why", "with", "you", "your", "azure"
+  ]);
+  const terms = [...new Set((text.toLowerCase().match(/[a-z0-9]+/g) || [])
+    .filter((term) => !stopWords.has(term)))];
+  if (terms.length === 0) return null;
+
+  const scoreText = (value, weight) => {
+    const words = new Set((value.toLowerCase().match(/[a-z0-9]+/g) || []));
+    return terms.reduce((score, term) => score + (words.has(term) ? weight : 0), 0);
+  };
+
+  const matches = concepts.map((concept) => {
+    const relatedQuestions = questions.filter((question) => question.concept === concept.id);
+    let score = scoreText(
+      `${concept.title} ${concept.id.replace(/-/g, " ")} ${concept.topic}`,
+      5
+    );
+    score += scoreText(`${concept.explanation} ${concept.confusion}`, 2);
+    score += scoreText(
+      `${concept.practice.question} ${concept.practice.answer}`,
+      3
+    );
+
+    relatedQuestions.forEach((question) => {
+      score += scoreText(question.question, 4);
+      score += scoreText(question.options.join(" "), 2);
+    });
+
+    return { concept, relatedQuestions, score };
+  }).filter((match) => match.score >= 4)
+    .sort((a, b) => b.score - a.score ||
+      Number(b.concept.id === preferredConceptId) - Number(a.concept.id === preferredConceptId));
+
+  if (matches.length === 0) return null;
+
+  const bestMatch = matches[0];
+  const relatedQuestion = bestMatch.relatedQuestions
+    .map((question) => ({
+      question,
+      score: scoreText(question.question, 4) +
+        scoreText(question.options.join(" "), 2) +
+        scoreText(`${question.explanation} ${question.example}`, 1)
+    }))
+    .filter((match) => match.score > 0)
+    .sort((a, b) => b.score - a.score)[0];
+
+  return {
+    concept: bestMatch.concept,
+    question: relatedQuestion?.question || null
+  };
 }
 
 // Checks a Study Buddy question. Returns an error message, or "" if valid.

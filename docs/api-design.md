@@ -9,6 +9,19 @@ app would grow, in the same format as the Day 5 Library API.
 
 All requests and responses use JSON (`Content-Type: application/json`).
 
+## Production request path
+
+In a scaled deployment, the static frontend is served through Azure Front Door
+or a CDN. API requests go through Application Gateway or managed API ingress to
+multiple stateless API replicas. The API uses a managed connection pool and
+connects to one authoritative PostgreSQL writer with zone-redundant failover.
+This load balances application requests; it does not distribute writes among
+independent database primaries. See [database-design.md](database-design.md)
+for write consistency, read-replica, retry, and recovery requirements.
+
+The current project has no API server and uses local JSON plus `localStorage`,
+so this is a target architecture rather than an active load balancer.
+
 ---
 
 ## Endpoints
@@ -52,6 +65,10 @@ All requests and responses use JSON (`Content-Type: application/json`).
 - **Success status:** `201 Created`
 - **Note:** the server marks each answer right or wrong itself. It never trusts a
   `correct` value sent by the browser.
+- **Consistency:** create the attempt and its answers atomically in one
+  transaction. Require an idempotency key so safe client retries cannot create
+  duplicate attempts. Send the learner's immediate result/progress reads to the
+  primary database.
 
 ---
 

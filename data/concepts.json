@@ -214,5 +214,473 @@
       "question": "Which service collects performance metrics from your virtual machines?",
       "answer": "Azure Monitor."
     }
+  },
+  {
+    "id": "core-cloud-services",
+    "title": "Core cloud service types",
+    "topic": "Cloud concepts",
+    "explanation": "Compute services provide processing capacity for applications and workloads. Storage services retain files, objects, messages, and other data.",
+    "example": "A web app runs on compute while uploaded product photos are stored separately.",
+    "confusion": "Networking connects services, but it does not replace compute or storage.",
+    "practice": {
+      "question": "What broad service type runs application code?",
+      "answer": "Compute."
+    }
+  },
+  {
+    "id": "compute-services",
+    "title": "Azure compute options",
+    "topic": "Azure architecture and services",
+    "explanation": "Azure offers virtual machines for control over an operating system, containers for packaged workloads, and managed options such as Virtual Machine Scale Sets for groups of VMs.",
+    "example": "A scale set adds VM instances as traffic rises, while a container can run a single processing job without managing a VM.",
+    "confusion": "Azure Virtual Network supplies connectivity; it does not execute application workloads.",
+    "practice": {
+      "question": "Which service can manage a group of autoscaling Azure virtual machines?",
+      "answer": "Azure Virtual Machine Scale Sets."
+    }
+  },
+  {
+    "id": "virtual-networking",
+    "title": "Azure virtual networking",
+    "topic": "Azure architecture and services",
+    "explanation": "Azure Virtual Network provides private connectivity and isolation for Azure resources. Subnets divide a virtual network, and Azure DNS hosts DNS domains and records.",
+    "example": "A web tier and database tier use separate subnets, with network rules restricting which traffic can pass.",
+    "confusion": "A VNet connects resources; Azure DNS resolves names, and neither service manages user permissions.",
+    "practice": {
+      "question": "Which Azure resource provides a private network boundary for virtual machines?",
+      "answer": "Azure Virtual Network."
+    }
+  },
+  {
+    "id": "data-migration",
+    "title": "Azure data migration options",
+    "topic": "Azure architecture and services",
+    "explanation": "Azure Data Box uses a physical device to move large datasets when network transfer is impractical. Online migration tools are more suitable when connectivity and transfer time are sufficient.",
+    "example": "A research group copies a large archive to a Data Box device and ships it for upload into Azure.",
+    "confusion": "Azure Migrate helps assess and migrate workloads; Data Box is for transferring large volumes of data using a device.",
+    "practice": {
+      "question": "Which service can transfer a large dataset offline using a physical device?",
+      "answer": "Azure Data Box."
+    }
+  },
+  {
+    "id": "pricing-calculator",
+    "title": "Azure Pricing Calculator",
+    "topic": "Management and governance",
+    "explanation": "The Azure Pricing Calculator estimates the cost of planned Azure services and configurations. Microsoft Cost Management analyzes spending after resources are in use.",
+    "example": "A team estimates monthly costs for two VM sizes before deploying a test environment.",
+    "confusion": "Use the Pricing Calculator for estimates; use Cost Management to track actual usage and budgets.",
+    "practice": {
+      "question": "Which tool estimates the cost of a planned Azure deployment?",
+      "answer": "Azure Pricing Calculator."
+    }
+  },
+  {
+    "id": "purview",
+    "title": "Microsoft Purview",
+    "topic": "Management and governance",
+    "explanation": "Microsoft Purview provides data governance capabilities such as discovering and classifying data across an organization's data estate.",
+    "example": "A compliance team uses data classification to understand where sensitive information is stored.",
+    "confusion": "Azure Policy governs Azure resource configuration; Purview focuses on data governance and discovery.",
+    "practice": {
+      "question": "Which service helps discover and classify data across an organization's data estate?",
+      "answer": "Microsoft Purview."
+    }
+  },
+  {
+    "id": "arm-templates",
+    "title": "Azure Resource Manager templates",
+    "topic": "Management and governance",
+    "explanation": "Azure Resource Manager templates describe infrastructure as code, so Azure environments can be deployed consistently and repeatedly.",
+    "example": "A team uses one template with different parameters to create test and production environments.",
+    "confusion": "Tags label resources; ARM templates define resources and their configuration for deployment.",
+    "practice": {
+      "question": "What can deploy the same Azure infrastructure configuration repeatedly?",
+      "answer": "An Azure Resource Manager template."
+    }
+  },
+  {
+    "id": "azure-monitor",
+    "title": "Azure Monitor and Application Insights",
+    "topic": "Management and governance",
+    "explanation": "Azure Monitor collects and analyzes telemetry. Application Insights focuses on application-level data such as requests, dependencies, exceptions, and performance.",
+    "example": "A developer reviews request durations and exceptions to find a slow application endpoint.",
+    "confusion": "Service Health reports Azure platform incidents; Application Insights diagnoses telemetry from your application.",
+    "practice": {
+      "question": "Which Azure Monitor feature tracks application requests and exceptions?",
+      "answer": "Application Insights."
+    }
+  },
+  {
+    "id": "multi-cloud",
+    "title": "Multi-cloud deployments",
+    "topic": "Cloud concepts",
+    "explanation": "A multi-cloud approach uses services from more than one public cloud provider. Organizations may choose it for service selection, resilience, or business requirements.",
+    "example": "A company runs its customer portal on Azure and performs analytics with another public cloud provider.",
+    "confusion": "Multi-cloud means multiple public providers; hybrid cloud combines public cloud with private cloud or on-premises infrastructure.",
+    "practice": {
+      "question": "What is an architecture using Azure and another public cloud provider called?",
+      "answer": "Multi-cloud."
+    }
+  },
+  {
+    "id": "high-availability",
+    "title": "High availability",
+    "topic": "Cloud concepts",
+    "explanation": "High availability aims to keep a service accessible despite failures, commonly by using redundancy and reducing single points of failure.",
+    "example": "A booking service runs redundant application instances so one instance can fail without taking the service offline.",
+    "confusion": "High availability is about continued access; elasticity adjusts resources as demand changes.",
+    "practice": {
+      "question": "Which cloud benefit focuses on keeping a service accessible when a component fails?",
+      "answer": "High availability."
+    }
+  },
+  {
+    "id": "network-connectivity",
+    "title": "Connecting networks to Azure",
+    "topic": "Azure architecture and services",
+    "explanation": "Azure VPN Gateway provides encrypted connectivity over the internet. ExpressRoute provides a private connection to Microsoft cloud services through a connectivity provider.",
+    "example": "An organization can use a site-to-site VPN for encrypted internet connectivity or ExpressRoute for a private dedicated connection.",
+    "confusion": "VPN Gateway uses the public internet as transport; ExpressRoute is the private dedicated option.",
+    "practice": {
+      "question": "Which service provides a private dedicated connection from an on-premises network to Azure?",
+      "answer": "Azure ExpressRoute."
+    }
+  },
+  {
+    "id": "defender-cloud",
+    "title": "Microsoft Defender for Cloud",
+    "topic": "Management and governance",
+    "explanation": "Microsoft Defender for Cloud provides cloud security posture management and workload protection, including recommendations that help identify security improvements.",
+    "example": "A security team reviews recommendations to prioritize protections for its cloud workloads.",
+    "confusion": "Defender for Cloud focuses on cloud security posture and workload protection; Azure Policy enforces resource configuration rules.",
+    "practice": {
+      "question": "Which service provides security recommendations for Azure workloads?",
+      "answer": "Microsoft Defender for Cloud."
+    }
+  },
+  {
+    "id": "azure-app-service",
+    "title": "Azure App Service",
+    "topic": "Azure architecture and services",
+    "explanation": "Azure App Service is a managed platform for hosting web applications and APIs. The provider manages the hosting infrastructure so developers can focus on application code.",
+    "example": "A team deploys its booking website to App Service without patching a web server operating system.",
+    "confusion": "App Service is a managed web-hosting platform; virtual machines provide more operating-system control but require more management.",
+    "practice": {
+      "question": "Which service hosts web apps while Azure manages the underlying platform?",
+      "answer": "Azure App Service."
+    }
+  },
+  {
+    "id": "aks",
+    "title": "Azure Kubernetes Service",
+    "topic": "Azure architecture and services",
+    "explanation": "Azure Kubernetes Service (AKS) is a managed Kubernetes service for deploying and orchestrating containerized applications.",
+    "example": "AKS manages container replicas and updates for a group of cooperating microservices.",
+    "confusion": "Container Instances can run containers without managing VMs, but AKS provides Kubernetes orchestration.",
+    "practice": {
+      "question": "Which Azure service provides managed Kubernetes for container orchestration?",
+      "answer": "Azure Kubernetes Service."
+    }
+  },
+  {
+    "id": "azure-virtual-desktop",
+    "title": "Azure Virtual Desktop",
+    "topic": "Azure architecture and services",
+    "explanation": "Azure Virtual Desktop delivers virtualized Windows desktops and applications that users can access remotely.",
+    "example": "Staff use a centrally managed Windows desktop hosted in Azure from their personal devices.",
+    "confusion": "Azure Virtual Desktop provides user desktops; Azure Virtual Machines are general-purpose compute instances.",
+    "practice": {
+      "question": "Which service provides remote Windows desktops hosted in Azure?",
+      "answer": "Azure Virtual Desktop."
+    }
+  },
+  {
+    "id": "storage-tiers",
+    "title": "Azure Blob Storage access tiers",
+    "topic": "Azure architecture and services",
+    "explanation": "Blob Storage access tiers match storage costs to access patterns. Hot is for frequent access, Cool for infrequent access, Cold for rarely accessed data with a 90-day minimum stay, and Archive for offline long-term data that can tolerate rehydration delay.",
+    "example": "Frequently viewed images can use Hot, while compliance records that are rarely retrieved may use Archive.",
+    "confusion": "Archive minimizes storage cost but is offline and retrieval is not immediate. Cold data remains online but has a 90-day minimum stay.",
+    "practice": {
+      "question": "Which Blob tier suits data that is rarely read and can tolerate a retrieval delay?",
+      "answer": "Archive."
+    }
+  },
+  {
+    "id": "storage-redundancy",
+    "title": "Azure Storage redundancy",
+    "topic": "Azure architecture and services",
+    "explanation": "Storage redundancy options determine where copies of data are kept. LRS keeps copies in one datacenter, ZRS spans availability zones in a region, GRS replicates to a secondary region, and GZRS combines zone replication in the primary region with geo-replication to a secondary region. Read-access variants add secondary-region read access.",
+    "example": "A workload needing resilience to both zone and regional failures can consider GZRS, subject to service and region availability.",
+    "confusion": "ZRS protects across zones in one region; GRS replicates to another region. GZRS combines both, while read-access variants allow reads from the secondary copy.",
+    "practice": {
+      "question": "Which redundancy option replicates data to another region without normal read access to the secondary copy?",
+      "answer": "Geo-redundant storage (GRS)."
+    }
+  },
+  {
+    "id": "conditional-access",
+    "title": "Microsoft Entra Conditional Access",
+    "topic": "Azure architecture and services",
+    "explanation": "Conditional Access evaluates signals such as the user, location, device, and application, then applies access decisions or requirements such as multifactor authentication.",
+    "example": "A sign-in from an unfamiliar location can require an additional verification step.",
+    "confusion": "Conditional Access evaluates sign-in context; RBAC assigns permissions to Azure resources.",
+    "practice": {
+      "question": "Which Entra capability can require MFA based on sign-in conditions?",
+      "answer": "Conditional Access."
+    }
+  },
+  {
+    "id": "zero-trust",
+    "title": "Zero Trust",
+    "topic": "Azure architecture and services",
+    "explanation": "Zero Trust follows the principles of verifying explicitly, using least-privilege access, and assuming breach. Network location alone is not enough to trust a request.",
+    "example": "A sign-in is evaluated based on identity and device signals even when it comes from inside the corporate network.",
+    "confusion": "Zero Trust continuously evaluates access; perimeter-only security assumes that the internal network is trusted.",
+    "practice": {
+      "question": "Which security model avoids trusting requests solely because they originate inside a network?",
+      "answer": "Zero Trust."
+    }
+  },
+  {
+    "id": "defense-in-depth",
+    "title": "Defense in depth",
+    "topic": "Azure architecture and services",
+    "explanation": "Defense in depth uses multiple, independent layers of protection so that one failed control does not leave a workload unprotected.",
+    "example": "Identity safeguards, network filtering, endpoint protection, and backups provide different protective layers.",
+    "confusion": "Defense in depth layers security controls; high availability uses redundancy to keep services accessible.",
+    "practice": {
+      "question": "What is the strategy of using several independent security safeguards called?",
+      "answer": "Defense in depth."
+    }
+  },
+  {
+    "id": "cloud-shell",
+    "title": "Azure Cloud Shell",
+    "topic": "Management and governance",
+    "explanation": "Azure Cloud Shell is a browser-based shell for managing Azure resources. It includes Azure CLI and Azure PowerShell without requiring local installation of those tools.",
+    "example": "An administrator opens Cloud Shell in a browser to run a command from a temporary workstation.",
+    "confusion": "Cloud Shell is an interactive command environment; ARM templates define resources for repeatable deployment.",
+    "practice": {
+      "question": "Which browser-based Azure tool includes CLI and PowerShell?",
+      "answer": "Azure Cloud Shell."
+    }
+  },
+  {
+    "id": "azure-arc",
+    "title": "Azure Arc",
+    "topic": "Management and governance",
+    "explanation": "Azure Arc extends Azure management capabilities to supported resources running outside Azure, including on-premises, edge, and other cloud environments.",
+    "example": "A team can apply consistent Azure management practices to supported servers in its datacenter and in Azure.",
+    "confusion": "Azure Arc extends management across environments; Azure Migrate helps assess and move workloads into Azure.",
+    "practice": {
+      "question": "Which service extends Azure management to supported on-premises and multicloud resources?",
+      "answer": "Azure Arc."
+    }
+  },
+  {
+    "id": "log-analytics",
+    "title": "Log Analytics",
+    "topic": "Management and governance",
+    "explanation": "Log Analytics is part of Azure Monitor and is used to query and analyze log data collected in Azure Monitor Logs workspaces.",
+    "example": "An engineer queries resource and application logs to investigate a spike in failed requests.",
+    "confusion": "Log Analytics queries collected logs; Application Insights focuses on application telemetry, while Service Health reports Azure platform events.",
+    "practice": {
+      "question": "Which Azure Monitor capability queries log data in a workspace?",
+      "answer": "Log Analytics."
+    }
+  },
+  {
+    "id": "service-level-agreements",
+    "title": "Azure service-level agreements",
+    "topic": "Management and governance",
+    "explanation": "An Azure service-level agreement describes service-specific commitments such as availability or connectivity and the terms for service credits when applicable.",
+    "example": "A team reviews a service's SLA and its conditions before selecting it for a critical workload.",
+    "confusion": "An SLA states Microsoft's service commitments; a status page reports current incidents and a service-health alert reports impact to your resources.",
+    "practice": {
+      "question": "Where can you review Microsoft's service availability commitment and applicable service-credit terms?",
+      "answer": "The service-level agreement (SLA)."
+    }
+  },
+  {
+    "id": "region-pairs",
+    "title": "Azure region pairs",
+    "topic": "Azure architecture and services",
+    "explanation": "Microsoft associates some Azure regions as pairs. Some services use pairs for geo-replication or recovery, but pairing alone does not configure workload replication, high availability, or failover.",
+    "example": "A team configures its application and data services for a second region instead of assuming the platform will move the workload automatically.",
+    "confusion": "Region pairs support some service recovery capabilities; they do not automatically provide application disaster recovery.",
+    "practice": {
+      "question": "Does deploying to a region pair automatically configure application failover?",
+      "answer": "No. The workload's replication and failover design must be configured."
+    }
+  },
+  {
+    "id": "sovereign-regions",
+    "title": "Sovereign cloud regions",
+    "topic": "Azure architecture and services",
+    "explanation": "Some Azure regions belong to sovereign cloud geographies for customers with specific data residency and regulatory requirements. Available services and features can differ from global Azure.",
+    "example": "An organization checks sovereign environment requirements and service availability before planning a deployment.",
+    "confusion": "A sovereign region addresses a specific jurisdictional cloud boundary; an availability zone is a physical datacenter location within a region.",
+    "practice": {
+      "question": "What should an organization with strict sovereign data requirements evaluate?",
+      "answer": "An appropriate sovereign cloud region and its service availability."
+    }
+  },
+  {
+    "id": "private-endpoints",
+    "title": "Azure private endpoints",
+    "topic": "Azure architecture and services",
+    "explanation": "A private endpoint is a network interface with a private IP from a virtual network that connects to an Azure service through Azure Private Link. Public network access may need separate restriction.",
+    "example": "An application connects to an Azure Storage account using a private address in its VNet.",
+    "confusion": "A private endpoint provides private connectivity but does not necessarily disable the service's public endpoint.",
+    "practice": {
+      "question": "What connects a VNet to an Azure service using a private IP address?",
+      "answer": "A private endpoint."
+    }
+  },
+  {
+    "id": "azure-file-sync",
+    "title": "Azure File Sync",
+    "topic": "Azure architecture and services",
+    "explanation": "Azure File Sync centralizes file shares in Azure Files while synchronizing registered Windows Servers. Cloud tiering can keep frequently used files cached locally and tier less-used files to Azure.",
+    "example": "Several office file servers synchronize through a central Azure file share and keep popular files cached on site.",
+    "confusion": "Azure File Sync synchronizes hybrid file shares; Azure Data Box is for bulk physical data transfer.",
+    "practice": {
+      "question": "Which service keeps Windows file servers synchronized with Azure Files?",
+      "answer": "Azure File Sync."
+    }
+  },
+  {
+    "id": "storage-transfer-tools",
+    "title": "Azure Storage transfer tools",
+    "topic": "Azure architecture and services",
+    "explanation": "AzCopy is a command-line utility for copying data to, from, or between storage accounts. Azure Storage Explorer is a standalone graphical application for connecting to and managing storage data.",
+    "example": "An administrator scripts a bulk transfer with AzCopy or browses a container interactively with Storage Explorer.",
+    "confusion": "AzCopy is command-line based; Storage Explorer provides a graphical interface.",
+    "practice": {
+      "question": "Which tool is the command-line option for copying data to Azure Storage?",
+      "answer": "AzCopy."
+    }
+  },
+  {
+    "id": "azure-portal",
+    "title": "Azure portal",
+    "topic": "Management and governance",
+    "explanation": "The Azure portal is a web-based graphical console for creating, managing, and monitoring Azure resources and subscriptions.",
+    "example": "An administrator uses the portal in a browser to configure a virtual machine and review its settings.",
+    "confusion": "The portal is a graphical interface; Azure Cloud Shell provides an interactive command-line environment.",
+    "practice": {
+      "question": "Which web-based graphical console manages Azure resources?",
+      "answer": "The Azure portal."
+    }
+  },
+  {
+    "id": "availability-sets",
+    "title": "Availability sets, fault domains and update domains",
+    "topic": "Azure architecture and services",
+    "explanation": "Availability sets distribute virtual machines across fault domains and update domains within a datacenter. Fault domains separate shared power and network infrastructure; update domains control which VMs can be restarted together during planned maintenance.",
+    "example": "A service places redundant VMs in an availability set so one hardware fault or maintenance event is less likely to affect every instance.",
+    "confusion": "Availability sets protect against hardware and maintenance events within a datacenter; availability zones use physically separate datacenters within a region.",
+    "practice": {
+      "question": "Which Azure feature separates VMs into fault and update domains within a datacenter?",
+      "answer": "Availability sets."
+    }
+  },
+  {
+    "id": "workflow-integration",
+    "title": "Azure Logic Apps and Event Grid",
+    "topic": "Azure architecture and services",
+    "explanation": "Azure Logic Apps builds automated workflows with a visual designer and connectors. Azure Event Grid routes events from publishers to subscribers so applications can react to changes.",
+    "example": "Event Grid detects a new blob and routes its event to a workflow that sends a notification and records the upload.",
+    "confusion": "Logic Apps orchestrates workflow steps; Event Grid routes events; Azure Functions runs custom code in response to triggers.",
+    "practice": {
+      "question": "Which service routes events from publishers to subscribers?",
+      "answer": "Azure Event Grid."
+    }
+  },
+  {
+    "id": "azure-databases",
+    "title": "Azure relational and NoSQL databases",
+    "topic": "Azure architecture and services",
+    "explanation": "Azure SQL Database is a managed relational database service. Azure Cosmos DB is a globally distributed NoSQL database service. Azure Database for PostgreSQL and MySQL provide managed open-source relational database engines.",
+    "example": "An application can store structured transactional records in Azure SQL Database and flexible globally distributed documents in Cosmos DB.",
+    "confusion": "Azure SQL Database is relational; Cosmos DB is NoSQL. Choose based on data model and workload requirements rather than assuming one is universally faster or better.",
+    "practice": {
+      "question": "Which Azure service is a globally distributed NoSQL database?",
+      "answer": "Azure Cosmos DB."
+    }
+  },
+  {
+    "id": "analytics-ai",
+    "title": "Azure analytics and AI services",
+    "topic": "Azure architecture and services",
+    "explanation": "Azure Synapse Analytics supports data warehousing and large-scale analytics. Azure AI Services provide prebuilt AI capabilities such as vision, speech and language, while Azure Machine Learning supports building and managing machine-learning models.",
+    "example": "A team analyzes a large reporting dataset in Synapse and uses a prebuilt language service to classify customer feedback.",
+    "confusion": "Synapse is for analytics and warehousing; prebuilt AI services expose ready-made capabilities, while Azure Machine Learning is for developing and managing ML models.",
+    "practice": {
+      "question": "Which service is designed for enterprise data warehousing and analytics?",
+      "answer": "Azure Synapse Analytics."
+    }
+  },
+  {
+    "id": "key-vault",
+    "title": "Azure Key Vault",
+    "topic": "Management and governance",
+    "explanation": "Azure Key Vault securely stores and controls access to secrets, keys and certificates used by applications and services.",
+    "example": "A web application retrieves a database credential from Key Vault instead of storing the secret in its source code.",
+    "confusion": "Key Vault protects secrets and cryptographic material; Microsoft Entra ID manages identities, and Azure Storage holds application data.",
+    "practice": {
+      "question": "Where should an application securely store API keys and certificates?",
+      "answer": "Azure Key Vault."
+    }
+  },
+  {
+    "id": "sentinel",
+    "title": "Microsoft Sentinel",
+    "topic": "Management and governance",
+    "explanation": "Microsoft Sentinel is a cloud-native security information and event management (SIEM) and security orchestration, automation and response (SOAR) service for security analytics and response.",
+    "example": "A security operations team correlates alerts from identity, endpoint and cloud sources in Sentinel to investigate a possible incident.",
+    "confusion": "Sentinel analyzes security events across an environment; Defender for Cloud focuses on cloud security posture and workload protection.",
+    "practice": {
+      "question": "Which service provides cloud-native SIEM and SOAR capabilities?",
+      "answer": "Microsoft Sentinel."
+    }
+  },
+  {
+    "id": "authentication-authorization",
+    "title": "Authentication and authorization",
+    "topic": "Azure architecture and services",
+    "explanation": "Authentication verifies who a user or workload is. Authorization determines what that authenticated identity is allowed to do, often through permissions such as Azure RBAC roles.",
+    "example": "A user signs in with MFA (authentication), then RBAC determines whether they can view or change a resource (authorization).",
+    "confusion": "Authentication answers 'who are you?'; authorization answers 'what can you do?'.",
+    "practice": {
+      "question": "Which process determines what actions an authenticated user may perform?",
+      "answer": "Authorization."
+    }
+  },
+  {
+    "id": "network-security-groups",
+    "title": "Network Security Groups",
+    "topic": "Azure architecture and services",
+    "explanation": "Network Security Groups (NSGs) contain allow and deny rules that filter inbound and outbound network traffic for Azure resources and subnets. Rules can use address, port and protocol information.",
+    "example": "An NSG rule allows HTTPS traffic to a web subnet while denying unsolicited inbound traffic on other ports.",
+    "confusion": "NSGs filter network traffic; Azure Policy governs resource configuration, and RBAC governs user permissions.",
+    "practice": {
+      "question": "Which Azure feature filters inbound and outbound traffic using network rules?",
+      "answer": "A Network Security Group (NSG)."
+    }
+  },
+  {
+    "id": "vm-billing-state",
+    "title": "Virtual machine stopped and deallocated states",
+    "topic": "Management and governance",
+    "explanation": "A stopped Azure virtual machine can continue to incur compute charges if it remains allocated. Deallocating the VM releases its compute allocation, so compute charges stop; storage charges for its disks can still apply.",
+    "example": "A team deallocates a test VM after work hours to stop compute billing while retaining its disks for the next day.",
+    "confusion": "Stopping from inside the operating system is not necessarily the same as deallocating in Azure. Deallocation stops compute billing, not all storage costs.",
+    "practice": {
+      "question": "What should you do to stop compute charges for an Azure VM that is no longer needed temporarily?",
+      "answer": "Stop and deallocate the VM; its disk storage may still incur charges."
+    }
   }
 ]

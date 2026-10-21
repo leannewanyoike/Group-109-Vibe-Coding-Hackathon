@@ -8,17 +8,19 @@ It is built with semantic HTML, CSS (Flexbox, Grid and media queries) and vanill
 
 ## Features
 
-- **Topic quizzes**: 19 original questions across the three AZ-900 domains. Take a mixed quiz or practise one topic; questions are shuffled each time.
+- **Topic quizzes**: 80 original questions across the three AZ-900 domains. The timed mixed exam selects 50 questions across the domains for each attempt; topic practice remains available.
+- **Timed mock exam**: 1 hour 45 minutes, with a live countdown. Unanswered questions count as incorrect when time expires.
 - **Form validation**: checking without choosing an answer shows "Please choose an answer first." in an `aria-live` message.
 - **Instant feedback**: the right answer turns green and the wrong one red, followed by an explanation and a Kenyan real-life example.
+- **Distractor explanations**: each incorrect choice explains the specific misconception, both during a quiz and in a saved missed-answer review on the dashboard.
 - **Topic mastery dashboard**: mastery = correct ÷ attempted × 100, calculated across all saved quizzes and drawn as bars with an 80% target line. Topics with too few answers say "Not enough data".
 - **Practice-based readiness estimate**: shown only after 10+ answers covering every topic, always with the number of answers behind it. It is never presented as an exam prediction.
 - **Recommended next step**: points to the untried or weakest topic and starts a quiz on it in one click.
-- **Study Buddy**: live search across 18 concepts, plain-language explanations, a common confusion and a "test yourself" question. Concepts you've missed are shown first.
+- **Study Buddy**: live search across 57 concepts, plain-language explanations, a common confusion and a "test yourself" question. Tutor questions are matched against saved concepts and practice questions; concepts you've missed are shown first.
 - **localStorage persistence**: practice history survives refreshes, with a "Clear all" button that asks for confirmation.
 - **Safe DOM rendering**: all content is built with `createElement` and `textContent`, never `innerHTML` with data.
 - **Responsive and accessible**: works at phone width, in dark mode and with the keyboard alone.
-- **Logic tests**: `tests.html` runs 27 checks on the logic and the question data.
+- **Logic tests**: `tests.html` runs 38 checks on the logic and the question data.
 
 ## How to run locally
 
@@ -107,11 +109,13 @@ See **[docs/vibe-coding-guide.md](docs/vibe-coding-guide.md)** for the ground-ru
   "options": ["…", "…", "…", "…"],
   "correctAnswer": 1,
   "explanation": "…",
+  "incorrectExplanations": { "0": "Why this distractor is wrong…", "2": "…", "3": "…" },
   "example": "…"
 }
 ```
 
 `topic` must be one of the three official domains, `concept` must match an `id` in `concepts.json`, and `id` values are never reused.
+Each index in `incorrectExplanations` must be a wrong option index; explain every incorrect option. Microsoft Learn and the three domains supplied by the user define the exam scope. The linked Quizlet set and YouTube video are topic references only; all CloudReady question wording, choices, and explanations are original. Video captions were unavailable, and no questions or answers were copied.
 
 ## Demo checklist
 
@@ -130,7 +134,7 @@ The Study Buddy works fully from `concepts.json`. To add a live AI tutor, a team
 
 ## Known limitations
 
-- 19 questions is enough for a demo, not for a reliable readiness estimate; aim for 50+.
+- 80 questions is enough for a demo, not for a reliable readiness estimate; aim for a larger bank before treating readiness estimates as representative.
 - Progress is stored per browser; there are no accounts yet (see `docs/database-design.md`).
 - The AI tutor needs a backend, which is outside the Web Foundations course.
 

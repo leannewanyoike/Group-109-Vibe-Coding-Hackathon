@@ -33,8 +33,12 @@ CREATE TABLE options (
   position INTEGER NOT NULL CHECK (position BETWEEN 0 AND 3),
   option_text TEXT NOT NULL,
   is_correct INTEGER NOT NULL DEFAULT 0 CHECK (is_correct IN (0, 1)),
+    incorrect_explanation TEXT,
   FOREIGN KEY (question_id) REFERENCES questions(question_id) ON DELETE CASCADE,
-  UNIQUE (question_id, position)
+    UNIQUE (question_id, position),
+    CHECK ((is_correct = 1 AND incorrect_explanation IS NULL) OR
+     (is_correct = 0 AND incorrect_explanation IS NOT NULL AND
+      length(trim(incorrect_explanation)) > 0))
 );
 
 CREATE TABLE learners (
@@ -83,10 +87,19 @@ INSERT INTO questions (question_id, topic_id, concept_id, question_text, explana
   (7, 2, 'resource-groups', 'Which Azure component logically groups resources?', 'A resource group is a logical container.'),
   (14, 3, 'azure-policy', 'Which service enforces rules about resource configuration?', 'Azure Policy evaluates and enforces rules.');
 
-INSERT INTO options (question_id, position, option_text, is_correct) VALUES
-  (1, 0, 'High availability', 0), (1, 1, 'Elasticity', 1), (1, 2, 'Governance', 0), (1, 3, 'Fault tolerance', 0),
-  (7, 0, 'Azure region', 0), (7, 1, 'Resource group', 1), (7, 2, 'Availability zone', 0), (7, 3, 'Virtual network', 0),
-  (14, 0, 'Azure Policy', 1), (14, 1, 'Azure Monitor', 0), (14, 2, 'Azure Advisor', 0), (14, 3, 'Azure Cloud Shell', 0);
+INSERT INTO options (question_id, position, option_text, is_correct, incorrect_explanation) VALUES
+  (1, 0, 'High availability', 0, 'High availability focuses on keeping a service accessible; it does not describe automatically changing capacity with demand.'),
+  (1, 1, 'Elasticity', 1, NULL),
+  (1, 2, 'Governance', 0, 'Governance is about rules and oversight for cloud resources, not automatic scaling.'),
+  (1, 3, 'Fault tolerance', 0, 'Fault tolerance helps a system continue despite component failures; it is different from adjusting capacity to match demand.'),
+  (7, 0, 'Azure region', 0, 'A region is a geographic area containing Azure datacenters; it is not a logical grouping for managing related resources.'),
+  (7, 1, 'Resource group', 1, NULL),
+  (7, 2, 'Availability zone', 0, 'An availability zone is a physically separate datacenter location within a region, not a resource container.'),
+  (7, 3, 'Virtual network', 0, 'A virtual network connects Azure resources over a private network; it does not group them for lifecycle management.'),
+  (14, 0, 'Azure Policy', 1, NULL),
+  (14, 1, 'Azure Monitor', 0, 'Azure Monitor gathers and analyzes operational telemetry; it does not enforce allowed resource configurations.'),
+  (14, 2, 'Azure Advisor', 0, 'Azure Advisor recommends improvements to deployed resources; it is not the policy enforcement service.'),
+  (14, 3, 'Azure Cloud Shell', 0, 'Cloud Shell is a browser-based command-line environment for managing Azure, not a service for enforcing configuration rules.');
 
 INSERT INTO learners (learner_id, name, email) VALUES
   (1, 'Amina Hassan', 'amina.hassan@example.edu'),

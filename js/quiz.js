@@ -10,6 +10,7 @@ const quizChoices = document.querySelector("#quiz-choices");
 
 const quizTitle = document.querySelector("#quiz-title");
 const quizProgress = document.querySelector("#quiz-progress");
+const quizTimer = document.querySelector("#quiz-timer");
 const progressFill = document.querySelector("#progress-fill");
 const answerForm = document.querySelector("#answer-form");
 const questionTopic = document.querySelector("#question-topic");
@@ -31,6 +32,7 @@ const homeBtn = document.querySelector("#home-btn");
 let allQuestions = [];
 let topics = [];
 let quiz = null; // { topic, questions, index, answers }
+let timerInterval = null;
 
 // ── Screens ────────────────────────────────────────────────────────
 
@@ -46,7 +48,7 @@ function showScreen(section) {
 function renderChoices() {
   quizChoices.innerHTML = "";
 
-  const mixedBtn = el("button", "btn btn-primary", `Start a mixed quiz (${pluralize(allQuestions.length, "question")})`);
+  const mixedBtn = el("button", "btn btn-primary", `Start ${MIXED_EXAM_QUESTION_COUNT}-question timed exam`);
   mixedBtn.type = "button";
   mixedBtn.addEventListener("click", () => startQuiz(null));
   quizChoices.appendChild(mixedBtn);
@@ -71,11 +73,34 @@ function renderChoices() {
 // ── Quiz ───────────────────────────────────────────────────────────
 
 function startQuiz(topic) {
+  if (timerInterval) clearInterval(timerInterval);
   const pool = topic ? allQuestions.filter((q) => q.topic === topic) : allQuestions;
-  quiz = { topic: topic, questions: shuffle(pool), index: 0, answers: [] };
-  quizTitle.textContent = topic || "Mixed quiz";
+  const selectedQuestions = topic
+    ? shuffle(pool)
+    : buildMixedExam(pool, topics);
+  quiz = {
+    topic: topic,
+    questions: selectedQuestions,
+    index: 0,
+    answers: [],
+    secondsRemaining: EXAM_DURATION_SECONDS,
+    finished: false
+  };
+  quizTitle.textContent = topic || "AZ-900 mock exam";
   showScreen(quizSection);
   renderQuestion();
+  updateTimer();
+  timerInterval = setInterval(() => {
+    if (!quiz || quiz.finished) return;
+    quiz.secondsRemaining -= 1;
+    updateTimer();
+    if (quiz.secondsRemaining <= 0) finishQuiz(true);
+  }, 1000);
+}
+
+function updateTimer() {
+  quizTimer.textContent = `Time left: ${formatCountdown(quiz.secondsRemaining)}`;
+  quizTimer.classList.toggle("quiz-timer-warning", quiz.secondsRemaining <= 5 * 60);
 }
 
 function currentQuestion() {
@@ -116,6 +141,7 @@ function renderQuestion() {
 
 function checkAnswer(event) {
   event.preventDefault();
+  if (quiz.finished) return;
   const chosen = answerForm.querySelector('input[name="answer"]:checked');
 
   // Validation: same idea as QuickNotes' empty-note check
@@ -125,6 +151,8 @@ function checkAnswer(event) {
   }
 
   const question = currentQuestion();
+  if (quiz.answers.some((answer) => answer.questionId === question.id)) return;
+
   const selected = Number(chosen.value);
   const correct = selected === question.correctAnswer;
 
@@ -136,14 +164,13 @@ function checkAnswer(event) {
     correct: correct
   });
 
-  // Lock the options and colour the right / wrong answers
+  // Preserve the submitted result while allowing learners to explore each choice.
   optionsBox.querySelectorAll(".option").forEach((label, i) => {
-    label.querySelector("input").disabled = true;
     if (i === question.correctAnswer) label.classList.add("is-correct");
     if (i === selected && !correct) label.classList.add("is-wrong");
   });
 
-  renderFeedback(question, correct);
+  renderFeedback(question, correct, selected);
   progressFill.style.width = `${((quiz.index + 1) / quiz.questions.length) * 100}%`;
   checkBtn.hidden = true;
   nextBtn.hidden = false;
@@ -151,11 +178,13 @@ function checkAnswer(event) {
   nextBtn.focus();
 }
 
-function renderFeedback(question, correct) {
+function renderFeedback(question, correct, selected) {
   feedbackBox.className = `feedback ${correct ? "feedback-right" : "feedback-wrong"}`;
   feedbackBox.appendChild(el("h3", "", correct ? "Correct." : "Not quite — here's why."));
 
   if (!correct) {
+    feedbackBox.appendChild(el("p", "", question.incorrectExplanations?.[selected] || "Review the explanation below to see how this choice differs from the correct answer."));
+
     const p = el("p", "", "The right answer is ");
     p.appendChild(el("strong", "", question.options[question.correctAnswer]));
     p.appendChild(document.createTextNode("."));
@@ -169,6 +198,8 @@ function renderFeedback(question, correct) {
   example.appendChild(document.createTextNode(question.example));
   feedbackBox.appendChild(example);
 
+  renderOptionFlashcard(question, selected);
+
   if (!correct) {
     const link = el("a", "text-link", "Ask the Study Buddy about this");
     link.href = `study-buddy.html?concept=${encodeURIComponent(question.concept)}`;
@@ -176,6 +207,35 @@ function renderFeedback(question, correct) {
   }
 
   feedbackBox.hidden = false;
+}
+
+function renderOptionFlashcard(question, selected) {
+  let flashcard = feedbackBox.querySelector(".option-flashcard");
+  if (!flashcard) {
+    flashcard = el("section", "option-flashcard");
+    flashcard.setAttribute("aria-live", "polite");
+    feedbackBox.appendChild(flashcard);
+  }
+
+  flashcard.innerHTML = "";
+  flashcard.appendChild(el("p", "option-flashcard-label", `Option ${String.fromCharCode(65 + selected)} · What it means`));
+  flashcard.appendChild(el("h4", "", question.options[selected]));
+  flashcard.appendChild(el("p", "", selected === question.correctAnswer
+    ? question.explanation
+    : question.incorrectExplanations?.[selected] || "Review the explanation above to understand this option."));
+}
+
+function exploreSelectedOption() {
+  if (feedbackBox.hidden) return;
+
+  const selected = answerForm.querySelector('input[name="answer"]:checked');
+  if (!selected) return;
+
+  const selectedIndex = Number(selected.value);
+  optionsBox.querySelectorAll(".option").forEach((label, index) => {
+    label.classList.toggle("is-exploring", index === selectedIndex);
+  });
+  renderOptionFlashcard(currentQuestion(), selectedIndex);
 }
 
 function nextQuestion() {
@@ -189,21 +249,31 @@ function nextQuestion() {
 
 // ── Results ────────────────────────────────────────────────────────
 
-function finishQuiz() {
+function finishQuiz(timeExpired = false) {
+  if (!quiz || quiz.finished) return;
+  quiz.finished = true;
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+
   const summary = summarizeAnswers(quiz.answers);
+  const totalQuestions = quiz.questions.length;
+  const unansweredCount = totalQuestions - summary.total;
+  const score = percent(summary.correctCount, totalQuestions) ?? 0;
 
   saveAttempt({
     quizTopic: quiz.topic,
-    score: summary.score,
+    score: score,
     correctCount: summary.correctCount,
-    totalQuestions: summary.total,
+    totalQuestions: totalQuestions,
     answers: quiz.answers
   });
 
   scoreEl.textContent = "";
-  scoreEl.appendChild(document.createTextNode(summary.score));
+  scoreEl.appendChild(document.createTextNode(score));
   scoreEl.appendChild(el("span", "", "%"));
-  scoreText.textContent = `You answered ${summary.correctCount} of ${pluralize(summary.total, "question")} correctly.`;
+  scoreText.textContent = `You answered ${summary.correctCount} of ${pluralize(totalQuestions, "question")} correctly.${unansweredCount > 0 ? ` ${unansweredCount} unanswered.` : ""}${timeExpired ? " Time is up; unanswered questions count as incorrect." : ""}`;
 
   topicResultsBox.innerHTML = "";
   Object.keys(summary.topicResults).forEach((topic) => {
@@ -212,7 +282,9 @@ function finishQuiz() {
   });
 
   nextStepBox.innerHTML = "";
-  if (summary.weakTopics.length > 0) {
+  if (timeExpired && unansweredCount > 0) {
+    nextStepBox.appendChild(el("p", "", "Review the concepts in unanswered questions before your next attempt."));
+  } else if (summary.weakTopics.length > 0) {
     const weakest = summary.weakTopics[0];
     const p = el("p", "", "Start with ");
     p.appendChild(el("strong", "", weakest));
@@ -247,6 +319,7 @@ homeBtn.addEventListener("click", () => showScreen(startSection));
 // Clear the error as soon as an answer is picked
 optionsBox.addEventListener("change", () => {
   errorMessage.textContent = "";
+  exploreSelectedOption();
 });
 
 // ── Load questions, then show the start screen ─────────────────────

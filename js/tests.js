@@ -88,8 +88,33 @@ const sample = [{ title: "Azure Policy", topic: "Management and governance", exp
 check("search is case-insensitive", searchConcepts(sample, "POLICY").length, 1);
 check("search with no match", searchConcepts(sample, "zzz").length, 0);
 
+const tutorConcepts = [
+  { id: "resource-locks", title: "Resource locks", topic: "Management and governance",
+    explanation: "Prevent accidental deletion of resources.", confusion: "Locks override permissions.",
+    practice: { question: "Which lock prevents deletion?", answer: "CanNotDelete." } },
+  { id: "rbac", title: "Azure RBAC", topic: "Management and governance",
+    explanation: "Assign roles to control resource permissions.", confusion: "RBAC controls who can act.",
+    practice: { question: "What controls permissions?", answer: "Azure RBAC." } }
+];
+const tutorQuestions = [
+  { id: 1, concept: "resource-locks", question: "How can you prevent resource deletion?",
+    options: ["A resource lock", "Azure RBAC", "Azure Monitor", "A region"],
+    correctAnswer: 0, explanation: "A CanNotDelete lock blocks deletion." }
+];
+const tutorMatch = findTutorMatch(
+  "How do I prevent someone deleting a resource?",
+  tutorConcepts,
+  tutorQuestions,
+  "rbac"
+);
+check("tutor finds the relevant saved concept", tutorMatch?.concept.id, "resource-locks");
+check("tutor finds a related saved question", tutorMatch?.question.id, 1);
+check("tutor returns no unrelated database match",
+  findTutorMatch("Which football team should I support?", tutorConcepts, tutorQuestions), null);
+
 // shuffle keeps every item
 check("shuffle keeps all items", shuffle([1, 2, 3, 4]).sort(), [1, 2, 3, 4]);
+check("105-minute timer formats as 1:45:00", formatCountdown(EXAM_DURATION_SECONDS), "1:45:00");
 
 // Data checks: every question follows the shared format
 async function checkData() {
@@ -101,9 +126,36 @@ async function checkData() {
     check("every question has 4 options", data.questions.every((q) => q.options.length === 4), true);
     check("every correctAnswer is 0–3",
       data.questions.every((q) => q.correctAnswer >= 0 && q.correctAnswer <= 3), true);
+    check("every wrong option has a rationale", data.questions.every((q) =>
+      q.options.every((_, i) => i === q.correctAnswer || Boolean(q.incorrectExplanations?.[i]))), true);
+    check("no correct option has an incorrect rationale", data.questions.every((q) =>
+      !q.incorrectExplanations?.[q.correctAnswer]), true);
     check("every topic is official", data.questions.every((q) => data.topics.includes(q.topic)), true);
     check("every concept has notes",
       data.questions.every((q) => concepts.some((c) => c.id === q.concept)), true);
+    check("every concept is covered by a question",
+      concepts.every((concept) => data.questions.some((q) => q.concept === concept.id)), true);
+
+    const exam = buildMixedExam(data.questions, data.topics);
+    check("mixed exam selects 50 questions", exam.length, MIXED_EXAM_QUESTION_COUNT);
+    check("mixed exam follows domain weighting",
+      data.topics.map((topic) => exam.filter((q) => q.topic === topic).length), [14, 19, 17]);
+    check("mixed exam has no repeated questions",
+      new Set(exam.map((q) => q.id)).size, exam.length);
+
+    const originalRandom = Math.random;
+    let firstExam;
+    let secondExam;
+    try {
+      Math.random = () => 0;
+      firstExam = buildMixedExam(data.questions, data.topics).map((q) => q.id).sort((a, b) => a - b);
+      Math.random = () => 0.999999;
+      secondExam = buildMixedExam(data.questions, data.topics).map((q) => q.id).sort((a, b) => a - b);
+    } finally {
+      Math.random = originalRandom;
+    }
+    check("new exam attempts can select different questions",
+      JSON.stringify(firstExam) !== JSON.stringify(secondExam), true);
   } catch (error) {
     check("data files load (use Live Server)", false, true);
   }

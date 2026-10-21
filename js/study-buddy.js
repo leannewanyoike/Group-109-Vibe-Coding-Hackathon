@@ -1,7 +1,6 @@
 // ── Study Buddy page (study-buddy.html) ────────────────────────────
-// Owned by Person 4. Works fully offline from data/concepts.json.
-// If AI_ENDPOINT is set in js/config.js, the "Ask the tutor" form
-// POSTs the question to that backend (see docs/api-design.md).
+// Tutor answers are grounded in concepts.json and questions.json.
+// If AI_ENDPOINT is set, it can elaborate on a matched concept.
 
 const statusText = document.querySelector("#status");
 const missedBox = document.querySelector("#missed-box");
@@ -22,6 +21,7 @@ const aiAnswer = document.querySelector("#ai-answer");
 const sources = document.querySelector("#sources");
 
 let concepts = [];
+let questions = [];
 let selectedId = null;
 
 // ── Concept list with live search ──────────────────────────────────
@@ -128,17 +128,40 @@ function selectConcept(id) {
   renderConceptList();
 }
 
-// ── Ask the tutor (optional AI) ────────────────────────────────────
+// ── Ask the tutor (local database, optional AI) ────────────────────
 
-// Shows AI text safely: each paragraph becomes a <p> via textContent.
-function showAiText(text) {
+// Shows tutor text safely: each paragraph becomes a <p> via textContent.
+function showTutorText(text, isAi = false, relatedConcept = null) {
   aiAnswer.innerHTML = "";
   aiAnswer.appendChild(el("h3", "", "Tutor's answer"));
   text.split(/\n{2,}/).forEach((para) => {
     aiAnswer.appendChild(el("p", "", para.replace(/\*\*/g, "").trim()));
   });
-  aiAnswer.appendChild(el("p", "fine-print", "AI answers can be wrong. Check them against Microsoft Learn."));
+  if (relatedConcept && relatedConcept.id !== selectedId) {
+    const relatedLink = el("a", "text-link", `Open ${relatedConcept.title}`);
+    relatedLink.href = `study-buddy.html?concept=${encodeURIComponent(relatedConcept.id)}`;
+    aiAnswer.appendChild(el("p", "", "This question is about a different study topic: "));
+    aiAnswer.lastChild.appendChild(relatedLink);
+  }
+  const note = isAi
+    ? "AI answers can be wrong. Check them against Microsoft Learn."
+    : "Matched from the saved AZ-900 concept notes and practice questions.";
+  aiAnswer.appendChild(el("p", "fine-print", note));
   aiAnswer.hidden = false;
+}
+
+function buildDatabaseAnswer(match) {
+  const paragraphs = [
+    `${match.concept.title} (${match.concept.topic}): ${match.concept.explanation}`
+  ];
+
+  if (match.question) {
+    paragraphs.push(
+      `Related practice question: ${match.question.question}\nAnswer: ${match.question.options[match.question.correctAnswer]}\n${match.question.explanation}`
+    );
+  }
+
+  return paragraphs.join("\n\n");
 }
 
 askForm.addEventListener("submit", async (event) => {
@@ -150,29 +173,38 @@ askForm.addEventListener("submit", async (event) => {
   }
 
   aiAnswer.hidden = true;
+  const match = findTutorMatch(askInput.value.trim(), concepts, questions, selectedId);
+
+  if (!match) {
+    showTutorText("I couldn't find a close match in the saved study database. Try asking with a specific AZ-900 term, such as RBAC, availability zones, Key Vault, or storage tiers.");
+    askStatus.textContent = "";
+    return;
+  }
+
+  const relatedConcept = match.concept.id === selectedId ? null : match.concept;
+  showTutorText(buildDatabaseAnswer(match), false, relatedConcept);
 
   if (!AI_ENDPOINT) {
-    askStatus.textContent =
-      "The AI tutor isn't switched on in this version, so use the saved explanation above. Your team can connect one later (see docs/api-design.md).";
+    askStatus.textContent = "";
     return;
   }
 
   askBtn.disabled = true;
-  askStatus.textContent = "Asking the tutor…";
+  askStatus.textContent = "Checking with the optional AI tutor…";
 
   try {
     const response = await fetch(AI_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ concept: selectedId, question: askInput.value.trim() })
+      body: JSON.stringify({ concept: match.concept.id, question: askInput.value.trim() })
     });
     if (!response.ok) throw new Error(`Status ${response.status}`);
     const data = await response.json();
     if (typeof data.explanation !== "string") throw new Error("Unexpected response");
-    showAiText(data.explanation);
+    showTutorText(data.explanation, true, relatedConcept);
     askStatus.textContent = "";
   } catch (error) {
-    askStatus.textContent = "The tutor is unavailable right now. The saved explanation above still covers this concept.";
+    askStatus.textContent = "The AI tutor is unavailable. The matched database answer is shown above.";
     console.error(error);
   } finally {
     askBtn.disabled = false; // runs whether it worked or failed
@@ -189,7 +221,12 @@ searchInput.addEventListener("input", renderConceptList);
 
 async function init() {
   try {
-    concepts = await loadConcepts();
+    const [loadedConcepts, questionData] = await Promise.all([
+      loadConcepts(),
+      loadQuestions()
+    ]);
+    concepts = loadedConcepts;
+    questions = questionData.questions;
     statusText.hidden = true;
     renderMissed();
 
