@@ -19,8 +19,9 @@ It is built with semantic HTML, CSS (Flexbox, Grid and media queries) and vanill
 - **Study Buddy**: live search across 57 concepts, plain-language explanations, a common confusion and a "test yourself" question. Tutor questions are matched against saved concepts and practice questions; concepts you've missed are shown first.
 - **localStorage persistence**: practice history survives refreshes, with a "Clear all" button that asks for confirmation.
 - **Safe DOM rendering**: all content is built with `createElement` and `textContent`, never `innerHTML` with data.
+- **Fast data loading**: repeated requests for the same JSON share an in-memory cached promise during a page session; the browser HTTP cache handles page reloads.
 - **Responsive and accessible**: works at phone width, in dark mode and with the keyboard alone.
-- **Logic tests**: `tests.html` runs 38 checks on the logic and the question data.
+- **Logic tests**: `tests.html` runs 39 checks on the logic and the question data.
 
 ## How to run locally
 
@@ -36,6 +37,14 @@ No build tools or dependencies are needed, but the app **must be served** (not d
    npx serve .
    ```
 4. Open `tests.html` to confirm everything passes: it should say **0 failed**.
+
+## Deploy on Render
+
+This repository includes a `render.yaml` Blueprint for the static site. Push the
+repository to GitHub, sign in to Render, choose **New → Blueprint**, connect this
+repository, and deploy the `cloudready-az900` static site. No build command or
+server process is required. The app uses browser `localStorage`, so each learner's
+practice history stays in that browser and is not shared across devices.
 
 ## Project structure
 

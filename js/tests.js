@@ -87,6 +87,9 @@ check("normal question accepted", validateQuestion("What is RBAC?"), "");
 const sample = [{ title: "Azure Policy", topic: "Management and governance", explanation: "Rules" }];
 check("search is case-insensitive", searchConcepts(sample, "POLICY").length, 1);
 check("search with no match", searchConcepts(sample, "zzz").length, 0);
+const cachedQuestionRequest = loadJSON("data/questions.json");
+check("duplicate JSON loads share the same request",
+  loadJSON("data/questions.json") === cachedQuestionRequest, true);
 
 const tutorConcepts = [
   { id: "resource-locks", title: "Resource locks", topic: "Management and governance",

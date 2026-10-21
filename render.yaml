@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: cloudready-az900
+    runtime: static
+    buildCommand: ""
+    staticPublishPath: .

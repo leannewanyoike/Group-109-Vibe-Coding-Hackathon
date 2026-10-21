@@ -1,11 +1,21 @@
 // ── Loading data with fetch ────────────────────────────────────────
-// Same pattern as the Day 5 users.json and API Lab exercises:
-// async/await, check response.ok, and handle errors with try/catch.
+// Same-URL requests share one promise for this page session. The browser's
+// HTTP cache handles reuse across page loads according to server headers.
+const jsonRequestCache = new Map();
 
-async function loadJSON(path) {
-  const response = await fetch(path);
-  if (!response.ok) throw new Error(`Status ${response.status} loading ${path}`);
-  return response.json();
+function loadJSON(path) {
+  if (!jsonRequestCache.has(path)) {
+    const request = fetch(path).then((response) => {
+      if (!response.ok) throw new Error(`Status ${response.status} loading ${path}`);
+      return response.json();
+    }).catch((error) => {
+      jsonRequestCache.delete(path);
+      throw error;
+    });
+    jsonRequestCache.set(path, request);
+  }
+
+  return jsonRequestCache.get(path);
 }
 
 // Returns { topics: [...], questions: [...] }
