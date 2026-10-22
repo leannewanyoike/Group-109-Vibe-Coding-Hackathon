@@ -25,6 +25,25 @@ function shuffle(list) {
   return copy;
 }
 
+// Shuffles the answer options of one question. Keeps the correct answer and
+// each wrong-answer explanation attached to the right option.
+// optionOrder[shownPosition] = original option index.
+function shuffleOptions(question) {
+  const order = shuffle(question.options.map((_, i) => i));
+  const incorrectExplanations = {};
+  order.forEach((orig, pos) => {
+    const text = question.incorrectExplanations?.[orig];
+    if (text) incorrectExplanations[pos] = text;
+  });
+  return {
+    ...question,
+    options: order.map((i) => question.options[i]),
+    correctAnswer: order.indexOf(question.correctAnswer),
+    incorrectExplanations,
+    optionOrder: order
+  };
+}
+
 function formatCountdown(totalSeconds) {
   const secondsRemaining = Math.max(0, Math.floor(totalSeconds));
   const hours = Math.floor(secondsRemaining / 3600);

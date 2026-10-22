@@ -80,7 +80,7 @@ function startQuiz(topic) {
     : buildMixedExam(pool, topics);
   quiz = {
     topic: topic,
-    questions: selectedQuestions,
+       questions: selectedQuestions.map(shuffleOptions),
     index: 0,
     answers: [],
     secondsRemaining: EXAM_DURATION_SECONDS,
@@ -160,9 +160,9 @@ function checkAnswer(event) {
     questionId: question.id,
     topic: question.topic,
     concept: question.concept,
-    selected: selected,
+   selected: question.optionOrder[selected],
     correct: correct
-  });
+  })
 
   // Preserve the submitted result while allowing learners to explore each choice.
   optionsBox.querySelectorAll(".option").forEach((label, i) => {
