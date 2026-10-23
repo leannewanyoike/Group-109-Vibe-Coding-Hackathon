@@ -314,6 +314,30 @@ textarea { resize: vertical; }
 }
 .quiz-timer-warning { color: var(--wrong); }
 
+/* Timer + pause button sit side-by-side */
+.quiz-timer-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.btn-pause {
+  padding: 4px 12px;
+  font-size: 0.85rem;
+  border-radius: 6px;
+}
+
+/* Paused overlay: blurs the question so answers can't be peeked */
+.quiz-paused fieldset,
+.quiz-paused #feedback,
+.quiz-paused #next-btn,
+.quiz-paused #check-btn {
+  filter: blur(6px);
+  pointer-events: none;
+  user-select: none;
+}
+
 @media (max-width: 600px) {
   .quiz-meta { align-items: center; }
   .quiz-timer { flex-basis: 100%; }
@@ -439,6 +463,9 @@ fieldset {
   margin: 4px 0 8px;
 }
 .score span { font-size: 0.45em; color: var(--muted); }
+.score-high { color: var(--right); }
+.score-mid  { color: var(--sun); }
+.score-low  { color: var(--wrong); }
 
 /* 7. Mastery bars --------------------------------------------------------- */
 .mastery { margin: 18px 0; }
@@ -531,6 +558,11 @@ fieldset {
 }
 .history-date { color: var(--muted); }
 .history-score { font-weight: 600; text-align: right; }
+
+.history-toggle-box {
+  margin-top: 10px;
+  text-align: center;
+}
 
 .review-list {
   list-style: none;

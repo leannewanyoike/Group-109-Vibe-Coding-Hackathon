@@ -27,11 +27,12 @@ const topicResultsBox = document.querySelector("#topic-results");
 const nextStepBox = document.querySelector("#next-step");
 const retryBtn = document.querySelector("#retry-btn");
 const homeBtn = document.querySelector("#home-btn");
+const pauseBtn = document.querySelector("#pause-btn");
 
 // State
 let allQuestions = [];
 let topics = [];
-let quiz = null; // { topic, questions, index, answers }
+let quiz = null; // { topic, questions, index, answers, paused }
 let timerInterval = null;
 
 // ── Screens ────────────────────────────────────────────────────────
@@ -88,10 +89,12 @@ function startQuiz(topic) {
   };
   quizTitle.textContent = topic || "AZ-900 mock exam";
   showScreen(quizSection);
+  pauseBtn.hidden = false;
+  pauseBtn.textContent = "Pause";
   renderQuestion();
   updateTimer();
   timerInterval = setInterval(() => {
-    if (!quiz || quiz.finished) return;
+    if (!quiz || quiz.finished || quiz.paused) return;
     quiz.secondsRemaining -= 1;
     updateTimer();
     if (quiz.secondsRemaining <= 0) finishQuiz(true);
@@ -247,6 +250,25 @@ function nextQuestion() {
   }
 }
 
+// ── Pause / Resume ─────────────────────────────────────────────────
+
+function togglePause() {
+  if (!quiz || quiz.finished) return;
+  quiz.paused = !quiz.paused;
+  pauseBtn.textContent = quiz.paused ? "Resume" : "Pause";
+
+  if (quiz.paused) {
+    // Hide question content and show overlay so answers can't be peeked
+    quizSection.classList.add("quiz-paused");
+    checkBtn.disabled = true;
+    nextBtn.disabled = true;
+  } else {
+    quizSection.classList.remove("quiz-paused");
+    checkBtn.disabled = false;
+    nextBtn.disabled = false;
+  }
+}
+
 // ── Results ────────────────────────────────────────────────────────
 
 function finishQuiz(timeExpired = false) {
@@ -273,7 +295,13 @@ function finishQuiz(timeExpired = false) {
   scoreEl.textContent = "";
   scoreEl.appendChild(document.createTextNode(score));
   scoreEl.appendChild(el("span", "", "%"));
+  // Colour-code the score: green ≥ 80%, amber 60–79%, red below 60%
+  scoreEl.className = `score ${
+    score >= 80 ? "score-high" : score >= 60 ? "score-mid" : "score-low"
+  }`;
   scoreText.textContent = `You answered ${summary.correctCount} of ${pluralize(totalQuestions, "question")} correctly.${unansweredCount > 0 ? ` ${unansweredCount} unanswered.` : ""}${timeExpired ? " Time is up; unanswered questions count as incorrect." : ""}`;
+
+  pauseBtn.hidden = true;
 
   topicResultsBox.innerHTML = "";
   Object.keys(summary.topicResults).forEach((topic) => {
@@ -299,7 +327,7 @@ function finishQuiz(timeExpired = false) {
 
     const missed = quiz.answers.find((a) => !a.correct);
     const buddyLink = el("a", "btn btn-secondary", "Explain a concept I missed");
-    buddyLink.href = `study-buddy.html?concept=${encodeURIComponent(missed.concept)}`;
+    buddyLink.href = `study-buddy.html?concept=${encodeURIComponent(missed?.concept || "")}`;
     actions.appendChild(buddyLink);
     nextStepBox.appendChild(actions);
   } else {
@@ -315,6 +343,18 @@ answerForm.addEventListener("submit", checkAnswer);
 nextBtn.addEventListener("click", nextQuestion);
 retryBtn.addEventListener("click", () => startQuiz(quiz.topic));
 homeBtn.addEventListener("click", () => showScreen(startSection));
+pauseBtn.addEventListener("click", togglePause);
+
+// Keyboard shortcut: Enter or Space advances to the next question
+document.addEventListener("keydown", (e) => {
+  if (!nextBtn.hidden && !nextBtn.disabled && (e.key === "Enter" || e.key === " ")) {
+    // Only act when focus is not on an interactive element (button / input)
+    if (document.activeElement === document.body || document.activeElement === quizSection) {
+      e.preventDefault();
+      nextQuestion();
+    }
+  }
+});
 
 // Clear the error as soon as an answer is picked
 optionsBox.addEventListener("change", () => {

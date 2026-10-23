@@ -46,7 +46,10 @@
             <div class="quiz-meta">
                 <span id="quiz-title"></span>
                 <span id="quiz-progress"></span>
-                <span id="quiz-timer" class="quiz-timer" role="timer" aria-live="off">Time left: 1:45:00</span>
+                <div class="quiz-timer-group">
+                    <span id="quiz-timer" class="quiz-timer" role="timer" aria-live="off">Time left: 1:45:00</span>
+                    <button type="button" id="pause-btn" class="btn btn-secondary btn-pause" hidden>Pause</button>
+                </div>
             </div>
             <div class="progress-track" aria-hidden="true"><div id="progress-fill"></div></div>
 

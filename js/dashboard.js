@@ -41,21 +41,47 @@ function renderReadiness(readiness) {
     `Based on ${pluralize(readiness.total, "answered question")}. This is an estimate from practice in this app, not a prediction of your exam result.`));
 }
 
+const historyToggleBox = document.querySelector("#history-toggle-box");
+const historyToggleBtn = document.querySelector("#history-toggle-btn");
+
+const HISTORY_PAGE = 8; // initial number of rows shown
+
 function renderHistory(attempts) {
   historyList.innerHTML = "";
   historyCount.textContent = `You have completed ${pluralize(attempts.length, "quiz", "quizzes")}.`;
 
-  // Newest first, show up to 8
-  [...attempts].reverse().slice(0, 8).forEach((attempt) => {
-    const li = el("li");
-    const time = el("time", "history-date", formatDate(attempt.date));
-    time.dateTime = attempt.date;
-    li.appendChild(time);
-    li.appendChild(el("span", "history-topic", attempt.quizTopic || "Mixed quiz"));
-    li.appendChild(el("span", "history-score",
-      `${attempt.correctCount}/${attempt.totalQuestions} (${attempt.score}%)`));
-    historyList.appendChild(li);
-  });
+  const sorted = [...attempts].reverse();
+  let showAll = false;
+
+  function drawRows() {
+    historyList.replaceChildren();
+    const visible = showAll ? sorted : sorted.slice(0, HISTORY_PAGE);
+    visible.forEach((attempt) => {
+      const li = el("li");
+      const time = el("time", "history-date", formatDate(attempt.date));
+      time.dateTime = attempt.date;
+      li.appendChild(time);
+      li.appendChild(el("span", "history-topic", attempt.quizTopic || "Mixed quiz"));
+      li.appendChild(el("span", "history-score",
+        `${attempt.correctCount}/${attempt.totalQuestions} (${attempt.score}%)`));
+      historyList.appendChild(li);
+    });
+
+    // Show toggle only when there are more rows than the page size
+    if (sorted.length > HISTORY_PAGE) {
+      historyToggleBox.hidden = false;
+      historyToggleBtn.textContent = showAll ? "Show less" : `Show all ${sorted.length}`;
+    } else {
+      historyToggleBox.hidden = true;
+    }
+  }
+
+  historyToggleBtn.onclick = () => {
+    showAll = !showAll;
+    drawRows();
+  };
+
+  drawRows();
 }
 
 function renderReview(attempts) {

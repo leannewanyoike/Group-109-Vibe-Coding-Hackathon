@@ -119,7 +119,7 @@ function selectConcept(id) {
     if (explainMode.value === "simple") {
       addBlockTo(explanationArea, "Simple explanation", concept.explanation);
     } else {
-      addBlockTo(explanationArea, "Real-life example", concept.example);
+      addBlockTo(explanationArea, "Real-life example", concept.example || concept.explanation);
     }
   }
 
