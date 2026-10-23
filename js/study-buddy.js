@@ -30,12 +30,19 @@ function renderConceptList() {
   const visible = searchConcepts(concepts, searchInput.value);
   conceptList.innerHTML = "";
 
-  conceptCount.textContent = searchInput.value.trim() === ""
-    ? `${pluralize(concepts.length, "concept")} available.`
-    : `${pluralize(visible.length, "concept")} match your search.`;
+  conceptCount.textContent =
+    searchInput.value.trim() === ""
+      ? `${pluralize(concepts.length, "concept")} available.`
+      : `${pluralize(visible.length, "concept")} match your search.`;
 
   if (visible.length === 0) {
-    conceptList.appendChild(el("li", "empty-hint", "No concepts match your search. Try a shorter word."));
+    conceptList.appendChild(
+      el(
+        "li",
+        "empty-hint",
+        "No concepts match your search. Try a shorter word.",
+      ),
+    );
     return;
   }
 
@@ -74,6 +81,11 @@ function addBlock(heading, text) {
   conceptBody.appendChild(el("p", "", text));
 }
 
+function addBlockTo(container, heading, text) {
+  container.appendChild(el("h3", "", heading));
+  container.appendChild(el("p", "", text));
+}
+
 function selectConcept(id) {
   const concept = concepts.find((c) => c.id === id);
   if (!concept) return;
@@ -84,8 +96,38 @@ function selectConcept(id) {
   conceptTitle.textContent = concept.title;
 
   conceptBody.innerHTML = "";
-  addBlock("Simple explanation", concept.explanation);
-  addBlock("Real-life example", concept.example);
+
+  addBlock("Explain It My Way", "Choose how you want to learn this concept.");
+
+  const explainMode = el("select", "explain-mode");
+
+  const simpleOption = el("option", "", "Simple English");
+  simpleOption.value = "simple";
+
+  const exampleOption = el("option", "", "African real-life example");
+  exampleOption.value = "example";
+
+  explainMode.appendChild(simpleOption);
+  explainMode.appendChild(exampleOption);
+  conceptBody.appendChild(explainMode);
+
+  const explanationArea = el("div", "explanation-area");
+
+  function showExplanationMode() {
+    explanationArea.innerHTML = "";
+
+    if (explainMode.value === "simple") {
+      addBlockTo(explanationArea, "Simple explanation", concept.explanation);
+    } else {
+      addBlockTo(explanationArea, "Real-life example", concept.example);
+    }
+  }
+
+  conceptBody.appendChild(explanationArea);
+  showExplanationMode();
+
+  explainMode.addEventListener("change", showExplanationMode);
+
   addBlock("Common confusion", concept.confusion);
 
   // Practice question with a reveal button
@@ -140,7 +182,9 @@ function showTutorText(text, isAi = false, relatedConcept = null) {
   if (relatedConcept && relatedConcept.id !== selectedId) {
     const relatedLink = el("a", "text-link", `Open ${relatedConcept.title}`);
     relatedLink.href = `study-buddy.html?concept=${encodeURIComponent(relatedConcept.id)}`;
-    aiAnswer.appendChild(el("p", "", "This question is about a different study topic: "));
+    aiAnswer.appendChild(
+      el("p", "", "This question is about a different study topic: "),
+    );
     aiAnswer.lastChild.appendChild(relatedLink);
   }
   const note = isAi
@@ -152,12 +196,12 @@ function showTutorText(text, isAi = false, relatedConcept = null) {
 
 function buildDatabaseAnswer(match) {
   const paragraphs = [
-    `${match.concept.title} (${match.concept.topic}): ${match.concept.explanation}`
+    `${match.concept.title} (${match.concept.topic}): ${match.concept.explanation}`,
   ];
 
   if (match.question) {
     paragraphs.push(
-      `Related practice question: ${match.question.question}\nAnswer: ${match.question.options[match.question.correctAnswer]}\n${match.question.explanation}`
+      `Related practice question: ${match.question.question}\nAnswer: ${match.question.options[match.question.correctAnswer]}\n${match.question.explanation}`,
     );
   }
 
@@ -173,10 +217,17 @@ askForm.addEventListener("submit", async (event) => {
   }
 
   aiAnswer.hidden = true;
-  const match = findTutorMatch(askInput.value.trim(), concepts, questions, selectedId);
+  const match = findTutorMatch(
+    askInput.value.trim(),
+    concepts,
+    questions,
+    selectedId,
+  );
 
   if (!match) {
-    showTutorText("I couldn't find a close match in the saved study database. Try asking with a specific AZ-900 term, such as RBAC, availability zones, Key Vault, or storage tiers.");
+    showTutorText(
+      "I couldn't find a close match in the saved study database. Try asking with a specific AZ-900 term, such as RBAC, availability zones, Key Vault, or storage tiers.",
+    );
     askStatus.textContent = "";
     return;
   }
@@ -196,15 +247,20 @@ askForm.addEventListener("submit", async (event) => {
     const response = await fetch(AI_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ concept: match.concept.id, question: askInput.value.trim() })
+      body: JSON.stringify({
+        concept: match.concept.id,
+        question: askInput.value.trim(),
+      }),
     });
     if (!response.ok) throw new Error(`Status ${response.status}`);
     const data = await response.json();
-    if (typeof data.explanation !== "string") throw new Error("Unexpected response");
+    if (typeof data.explanation !== "string")
+      throw new Error("Unexpected response");
     showTutorText(data.explanation, true, relatedConcept);
     askStatus.textContent = "";
   } catch (error) {
-    askStatus.textContent = "The AI tutor is unavailable. The matched database answer is shown above.";
+    askStatus.textContent =
+      "The AI tutor is unavailable. The matched database answer is shown above.";
     console.error(error);
   } finally {
     askBtn.disabled = false; // runs whether it worked or failed
@@ -223,7 +279,7 @@ async function init() {
   try {
     const [loadedConcepts, questionData] = await Promise.all([
       loadConcepts(),
-      loadQuestions()
+      loadQuestions(),
     ]);
     concepts = loadedConcepts;
     questions = questionData.questions;
